@@ -41,16 +41,16 @@ Cargo
 Supervisor (Se for secretário)
 
 Consulta -
-Paciente ok
-Medico ok
-Diagnóstico ok
-Descrição ok
-CID (Código Internacional de Doenças) ok
+Paciente
+Medico
+Diagnóstico
+Descrição 
+CID (Código Internacional de Doenças)
 Exames
-História Clínica (Varchar Grande) ok
-Data ok
+História Clínica (Varchar Grande)
+Data
 Pagamento
-Confirmado ok
+Confirmado
 Receita
 
 
@@ -81,10 +81,6 @@ Agendamento -
 Paciente
 Descrição
 Data do Agendamento
-
-Pagamento - 
-Tipo Pagamento
-Status Pagamento
 
 Prontuário -
 História do Paciente (Consultas, Exames, Paciente)
