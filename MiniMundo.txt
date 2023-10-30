@@ -1,0 +1,92 @@
+Pessoa - 
+Nome 
+Data de Nascimento
+Endereço (Cidade Rua Bairro Numero)
+Email
+Telefone (casa e celular)
+CPF
+RG
+Sexo
+
+Pacientes (Pessoa)-
+Profissão 
+Convênio
+Quem Indicou
+Nome Social
+Alergias
+Responsável (Pessoa, Fraca)
+
+Dados do Paciente -
+Pressão
+Peso
+Altura
+Cintura Abdominal
+IMC
+Data de Atualização
+
+Médico -
+CRM
+Especialidade 
+
+Especialidade -
+Nome
+Descricao
+RQE (Registro de Qualificao Especialidade)
+
+Nutricionista - 
+CRN
+
+Serviços Gerais -
+Cargo
+Supervisor (Se for secretário)
+
+Consulta -
+Paciente ok
+Medico ok
+Diagnóstico ok
+Descrição ok
+CID (Código Internacional de Doenças) ok
+Exames
+História Clínica (Varchar Grande) ok
+Data ok
+Pagamento
+Confirmado ok
+Receita
+
+
+Receita -
+Remédio
+Instruções
+Posologia
+
+Remédio -
+Nome
+Dosagem
+
+Exame -
+Paciente
+Medico
+Resultado
+Descrição
+Data (opcional)
+
+Atestado -
+Consulta
+Paciente
+Medico
+Data
+Descrição
+
+Agendamento -
+Paciente
+Descrição
+Data do Agendamento
+
+Pagamento - 
+Tipo Pagamento
+Status Pagamento
+
+Prontuário -
+História do Paciente (Consultas, Exames, Paciente)
+Primeira Vez
+Retorno Previsto
