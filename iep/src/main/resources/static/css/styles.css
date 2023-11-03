@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap');
+:root{
+    --verde-IEP: #179349;
+    --verde-hover: #B0F5C3;
+}
+
+.logo{
+    font-size: 3rem;
+    color: var(--verde-IEP);
+    font-weight: 600;
+}
+
+.logo:hover {
+    font-size: 3rem;
+    color: var(--verde-hover);
+}
+
+.nav-link{
+    color: var(--verde-IEP);
+}
+
+.nav-link .focus{
+    color:var(--verde-hover) !important;
+}
+
+.text-lg {
+    font-size: x-large;
+    font-weight: 400;
+}
+
+.title{
+    font-size: large;
+    color: var(--verde-IEP);
+}
+
+.invisible-link {
+    text-decoration: none;
+    cursor: pointer;
+}
