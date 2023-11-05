@@ -1,4 +1,4 @@
-package com.db_project.iep;
+package com.db_project.iep.Controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
