@@ -177,25 +177,3 @@ codigo_receita int,
 constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) references Remedio(nome, dosagem),
 constraint receita_fk foreign key (codigo_receita) references Receita(codigo)
 );
-
-insert into pessoa values ("694.556.004-04", "9.123.123", "Lúcia Cordeiro", "1971-10-03", "F", "8134661825", "81988383838", null, "Recife", "Boa Viagem", "Francisco da Cunha", "142");
-insert into medico values("694.556.004-04", "918232", "Endocrinologias", "390128321");
-insert into nutricionista  values("694.556.004-04", "312312");
-insert into consulta  values(DATE(NOW()), true, "Paciente é saudável", "3901283", "Bonito esbelto", "098.035.454-42", "694.556.004-04", NULL);
-insert into consulta  values("2023-11-04", true, "Paciente não é saudável", "3901283", "Bonito esbelto", "098.035.454-42", "694.556.004-04", NULL);
-insert into consulta  values("2023-11-04", true, "Paciente é saudável", "3901283", "Bonito esbelto", "098.035.454-42", null, "694.556.004-04");
-insert into agendamento  values("2023-11-07", "consulta com dra lucia", "098.035.454-42");
-insert into paciente values(null, null, null, null, "Médica", "694.556.004-04");
-
-SELECT COALESCE(p.nome_social, pe.nome) as nome, 
-e.email, 
-pe.tel_celular,
-COALESCE(MAX(c.dt_consulta), '---') as dt_consulta, 
-COALESCE(MIN(a.dt_agendamento), '---') as dt_agendamento 
-FROM paciente p 
-JOIN pessoa pe ON p.cpf_pessoa = pe.cpf 
-JOIN email e ON p.cpf_pessoa = e.cpf_pessoa 
-JOIN consulta c ON p.cpf_pessoa = c.cpf_paciente 
-JOIN agendamento a ON p.cpf_pessoa = a.cpf_paciente 
-GROUP BY COALESCE(p.nome_social, pe.nome), e.email, pe.tel_celular, dt_consulta, dt_agendamento
-ORDER BY nome asc;

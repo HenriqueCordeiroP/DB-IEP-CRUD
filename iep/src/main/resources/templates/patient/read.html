@@ -17,7 +17,7 @@
         <div class="container">
             <div class="d-flex justify-content-between">
                 <h1 class="title">Pacientes Cadastrados</h1>
-                <a href="#" class="invisible-link">
+                <a href="/patient/create" class="invisible-link">
                     <h1 class="title">+Adicionar Paciente</h1>
                 </a>
             </div>
@@ -41,8 +41,8 @@
                         <td th:text="${patient.nome}"></td>
                         <td th:text="${patient.email}"></td>
                         <td th:text="${patient.tel_celular}"></td>
-                        <td th:text="${patient.dt_consulta}"></td>
-                        <td th:text="${patient.dt_agendamento}"></td>
+                        <td th:text="${patient.consulta_dt}"></td>
+                        <td th:text="${patient.agendamento_dt}"></td>
                         <td></td>
                     </tr>
                 </tbody>

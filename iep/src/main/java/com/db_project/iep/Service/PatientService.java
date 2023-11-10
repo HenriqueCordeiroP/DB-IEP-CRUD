@@ -18,18 +18,25 @@ public class PatientService {
 	}
 	
 	public List<Map<String, Object>> getPatientList(){
-		return jdbcTemplate.queryForList("SELECT COALESCE(p.nome_social, pe.nome) as nome, "
-										+ "e.email, "
-										+ "pe.tel_celular, "
-										+ "COALESCE(MAX(c.dt_consulta), '---') as dt_consulta, "
-										+ "COALESCE(MIN(a.dt_agendamento), '---') as dt_agendamento "
-										+ "FROM paciente p "
-										+ "JOIN pessoa pe ON p.cpf_pessoa = pe.cpf "
-										+ "JOIN email e ON p.cpf_pessoa = e.cpf_pessoa "
-										+ "JOIN consulta c ON p.cpf_pessoa = c.cpf_paciente "
-										+ "JOIN agendamento a ON p.cpf_pessoa = a.cpf_paciente "
-										+ "GROUP BY nome, e.email, pe.tel_celular, dt_consulta, dt_agendamento "
-										+ "ORDER BY nome ASC");
+		return jdbcTemplate.queryForList("SELECT COALESCE(p.nome_social, pe.nome) AS nome, e.email, pe.tel_celular, "
+				+ "COALESCE(MIN(c.dt_consulta), '---') AS consulta_dt, COALESCE(MIN(a.dt_agendamento), '---') AS agendamento_dt "
+				+ "FROM paciente p "
+				+ "JOIN pessoa pe ON p.cpf_pessoa = pe.cpf "
+				+ "JOIN email e ON p.cpf_pessoa = e.cpf_pessoa  "
+				+ "LEFT JOIN("
+				+ "SELECT cons.cpf_paciente, MAX(cons.dt_consulta) AS dt_consulta "
+				+ "FROM consulta cons "
+				+ "WHERE cons.dt_consulta <= CURDATE() "
+				+ "GROUP BY cons.cpf_paciente "
+				+ ") c ON p.cpf_pessoa = c.cpf_paciente "
+				+ "LEFT JOIN ("
+				+ "SELECT ag.cpf_paciente, MIN(ag.dt_agendamento) AS dt_agendamento "
+				+ "FROM agendamento ag "
+				+ "WHERE ag.dt_agendamento >= CURDATE() "
+				+ "GROUP BY ag.cpf_paciente "
+				+ ") a ON p.cpf_pessoa = c.cpf_paciente "
+				+ "GROUP BY COALESCE(p.nome_social, pe.nome), e.email, pe.tel_celular "
+				+ "ORDER BY nome ASC");
 	}
-	
+
 }

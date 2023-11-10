@@ -27,4 +27,9 @@ public class PatientController {
 		model.addAttribute("patients", patients);
 		return "patient/read";
 	}
+	
+	@GetMapping("/create")
+	public String create(Model model) {
+		return "patient/create";
+	}
 }
