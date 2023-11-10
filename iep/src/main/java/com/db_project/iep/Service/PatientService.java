@@ -38,5 +38,17 @@ public class PatientService {
 				+ "GROUP BY COALESCE(p.nome_social, pe.nome), e.email, pe.tel_celular "
 				+ "ORDER BY nome ASC");
 	}
+	
+	public int createPatient(String name, String nome_social, String cpf, String rg, String celular,String residencial,String email,
+							  String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo,String convenio, 
+							  String indicacao, String imc,String cintura,String peso,String altura) {
+		PessoaService pessoaService = new PessoaService(jdbcTemplate);
+		int pessoaResult = pessoaService.createPessoa(cpf, altura, nome_social, rg, sexo, residencial, celular, cidade, bairro, rua, numero);
+		int emailResult = pessoaService.createEmail(cpf, email);
+		if (pessoaResult > 0 && emailResult > 0) {
+			// create patient
+		}
+		return 0;
+	}
 
 }

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"
-    xmlns:hx="https://github.com.wimdeblauwe/htmx-spring-boot-thymeleaf">
+    xmlns:hx="https://github.com/wimdeblauwe/htmx-spring-boot-thymeleaf">
 
 <head>
     <meta charset="UTF-8">
@@ -12,37 +12,160 @@
 </head>
 
 <body>
-    <section class="mx-5">
-        <div class="container">
-            <div class="row">
-                <form action="">
-                    <div class="col-3">
-                        <div class="d-flex justify-content-center">
-                            <input class="form-control" type="file" id="image" name="image" accept="image/*" />
-                            <input class="btn btn-primary form-control" type="submit" value="Salvar" name="submit">
-                            <a class="btn btn-primary form-control" href="/">Cancelar</a>
-                        </div>
-                    </div>
-                    <div class="col-9">
-                        <div class="row">
-                            <div class="col">
-                                <label class="form-label" for="name">Nome</label>
-                                <input class="form-control" type="text" id="name" name="name">
-                            </div>
-                            <div class="col">
-                                <label class="form-label" for="social_name">Nome Social</label>
-                                <input class="form-control" type="text" id="social_name" name="social_name">
-                            </div>
-                        </div>
-                    </div>
-                </form>
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-md-1 text-left">
+                <a class="invisible-link btn btn-primary" href="/patient/read">
+                    Voltar
+                </a>
+            </div>
+            <div class="col-md-11 text-left">
+                <h1>Adicionar Paciente</h1>
             </div>
         </div>
-    </section>
-    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-        crossorigin="anonymous"></script>
+
+        <form method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="nome">Nome:</label>
+                            <input type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nome_social">Nome Social:</label>
+                            <input type="text" class="form-control" id="nome_social" name="nome_social" placeholder="">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cpf">CPF:</label>
+                            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX"
+                                pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rg">RG:</label>
+                            <input type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="celular">Telefone Celular:</label>
+                            <input type="text" class="form-control" id="celular" name="celular"
+                                placeholder="(00) 912341234 " required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="residencial">Telefone Residencial:</label>
+                            <input type="text" class="form-control" id="residencial" name="residencial"
+                                placeholder="(00) 12341234 ">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email:</label>
+                            <input type="email" class="form-control" id="email" name="email"
+                                placeholder="exemplo@email.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cidade">Cidade:</label>
+                            <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="bairro">Bairro:</label>
+                            <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="rua">Rua:</label>
+                            <input type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="numero">Número:</label>
+                            <input type="text" class="form-control" id="numero" name="numero" placeholder="123"
+                                required>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="data_nascimento">Data de Nascimento:</label>
+                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sexo">Sexo:</label>
+                            <select class="form-control" id="sexo" name="sexo" required>
+                                <option value=""></option>
+                                <option value="M">Masculino</option>
+                                <option value="F">Feminino</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="profissao">Profissão:</label>
+                            <input type="text" class="form-control" id="profissao" niame="profissao"
+                                placeholder="Ex.: Estudante">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="convenio">Convênio:</label>
+                            <input type="text" class="form-control" id="convenio" name="convenio" placeholder="SUS"
+                                required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="indicacao">Indicação:</label>
+                            <input type="text" class="form-control" id="indicacao" name="indicacao"
+                                placeholder="Dr. João da Silva">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="imc">IMC:</label>
+                            <input type="number" class="form-control" id="imc" name="imc" placeholder="32.1">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="cintura">Cintura em cm:</label>
+                            <input type="number" class="form-control" id="cintura" name="cintura" placeholder="98cm">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="peso">Peso em kg:</label>
+                            <input type="number" class="form-control" id="peso" name="peso" placeholder="85">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="altura">Altura em cm:</label>
+                            <input type="number" class="form-control" id="altura" name="altura" placeholder="172">
+                        </div>
+                        <div class="form-group mt-4">
+                            <label for="image">Foto:</label>
+                            <input class="form-control" type="file" id="image" name="image" accept="image/*" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 my-3">
+                        <input class="btn btn-primary form-control" type="submit" value="Salvar" name="submit">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    </div>
 </body>
 
 </html>

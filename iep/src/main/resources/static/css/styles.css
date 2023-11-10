@@ -37,3 +37,17 @@
     text-decoration: none;
     cursor: pointer;
 }
+
+.btn-primary, .btn-primary:active, .btn-primary:focus{
+    background-color: var(--verde-IEP) !important;
+    border-color: var(--verde-IEP) !important;
+}
+
+.btn-primary:hover{
+    background-color: var(--verde-hover) !important;
+    border-color: var(--verde-hover) !important;
+}
+
+.form-control{
+    background-color: var(--verde-hover);
+}
