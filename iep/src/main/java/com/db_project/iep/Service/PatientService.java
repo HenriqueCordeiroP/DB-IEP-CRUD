@@ -1,5 +1,7 @@
 package com.db_project.iep.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -41,14 +43,47 @@ public class PatientService {
 	
 	public int createPatient(String name, String nome_social, String cpf, String rg, String celular,String residencial,String email,
 							  String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo,String convenio, 
-							  String indicacao, String imc,String cintura,String peso,String altura) {
+							  String profissao, String indicacao, String imc,String cintura,String peso,String altura, String alergias) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		int pessoaResult = pessoaService.createPessoa(cpf, altura, nome_social, rg, sexo, residencial, celular, cidade, bairro, rua, numero);
+		int pessoaResult = pessoaService.createPessoa(cpf, rg, name, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero);
 		int emailResult = pessoaService.createEmail(cpf, email);
 		if (pessoaResult > 0 && emailResult > 0) {
-			// create patient
+			String sql = "INSERT INTO paciente VALUES(?, ?, ?, ?, ?, ?)";
+			return jdbcTemplate.update(sql, alergias, nome_social, indicacao, convenio, profissao, cpf);
+		}
+		if (imc != "NULL" && cintura != "NULL" && peso != "NULL" && altura != "NULL"){
+			createNewDadosDoPaciente(imc, cintura, peso, altura);
 		}
 		return 0;
+	}
+
+	public int createNewDadosDoPaciente(String imc_string,String cintura_string ,String peso_string,String altura_string){
+		// LocalDate currentDate = LocalDate.now();
+		// DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
+		// String today = currentDate.format(formatter);
+		Float imc = null;
+		Float cintura = null;
+		Float peso = null;
+		Float altura = null;
+		try{
+			imc = Float.parseFloat(imc_string); 
+		} catch (Exception e){
+		}
+		try{
+			cintura = Float.parseFloat(cintura_string); 
+
+		} catch (Exception e){
+		}
+		try{
+			peso = Float.parseFloat(peso_string); 
+		} catch (Exception e){
+		}
+		try{
+			altura = Float.parseFloat(altura_string); 
+		} catch (Exception e){
+		}
+		String sql = "INSERT INTO dados_do_paciente VALUES(?, ?, ? ,?)";
+		return jdbcTemplate.update(sql, imc, cintura, peso, altura);
 	}
 
 }

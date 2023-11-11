@@ -16,12 +16,14 @@ public class PessoaService {
 	
 	public int createPessoa(String cpf, String rg, String nome, String dt_nascimento, String sexo, String residencial, String celular,
 			String cidade, String bairro, String rua, String numero) {
-		// create pessoa
-		return 0;
+			String sql = "INSERT INTO pessoa (cpf, rg, nome, dt_nascimento, sexo, tel_residencial," + 
+									"tel_celular, cidade, bairro, rua, numero) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
+		return jdbcTemplate.update(sql, cpf, rg, nome, dt_nascimento, sexo, residencial, celular, cidade, 
+									bairro, rua, numero);
 	}
 	
 	public int createEmail(String cpf, String email) {
-		// create email
-		return 0;
+		String sql = "INSERT INTO email VALUES(?, ?)";
+		return jdbcTemplate.update(sql, email , cpf);
 	}
 }

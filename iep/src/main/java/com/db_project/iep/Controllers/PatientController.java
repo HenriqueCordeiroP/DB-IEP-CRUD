@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.db_project.iep.Service.PatientService;
 
+import Utils.Conversion;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -38,28 +39,30 @@ public class PatientController {
 	
 	@PostMapping("/create")
 	public String create_form(HttpServletRequest request) {
-		String name = request.getParameter("nome");
-		String nome_social = request.getParameter("nome_social");
-		String rg = request.getParameter("rg");
-		String cpf = request.getParameter("cpf");
-		String celular = request.getParameter("celular");
-		String residencial = request.getParameter("residencial");
-		String email = request.getParameter("email");
-		String cidade = request.getParameter("cidade");
-		String bairro = request.getParameter("bairro");
-		String rua = request.getParameter("rua");
-		String numero = request.getParameter("numero");
-		String dt_nascimento = request.getParameter("data_nascimento");
-		String sexo = request.getParameter("sexo");
-		String convenio = request.getParameter("convenio");
-		String indicacao = request.getParameter("indicacao");
-		String imc = request.getParameter("imc");
-		String cintura = request.getParameter("cintura");
-		String peso = request.getParameter("peso");
-		String altura = request.getParameter("altura");
+		String name = Conversion.parseStringOrNull(request.getParameter("nome"));
+		String nome_social = Conversion.parseStringOrNull(request.getParameter("nome_social"));
+		String rg = Conversion.parseStringOrNull(request.getParameter("rg"));
+		String cpf = Conversion.parseStringOrNull(request.getParameter("cpf"));
+		String celular = Conversion.parseStringOrNull(request.getParameter("celular"));
+		String residencial = Conversion.parseStringOrNull(request.getParameter("residencial"));
+		String email = Conversion.parseStringOrNull(request.getParameter("email"));
+		String cidade = Conversion.parseStringOrNull(request.getParameter("cidade"));
+		String bairro = Conversion.parseStringOrNull(request.getParameter("bairro"));
+		String rua = Conversion.parseStringOrNull(request.getParameter("rua"));
+		String numero = Conversion.parseStringOrNull(request.getParameter("numero"));
+		String dt_nascimento = Conversion.parseStringOrNull(request.getParameter("data_nascimento"));
+		String sexo = Conversion.parseStringOrNull(request.getParameter("sexo"));
+		String convenio = Conversion.parseStringOrNull(request.getParameter("convenio"));
+		String profissao = Conversion.parseStringOrNull(request.getParameter("profissao"));
+		String indicacao =Conversion.parseStringOrNull( request.getParameter("indicacao"));
+		String imc = Conversion.parseStringOrNull(request.getParameter("imc"));
+		String cintura = Conversion.parseStringOrNull(request.getParameter("cintura"));
+		String peso = Conversion.parseStringOrNull(request.getParameter("peso"));
+		String altura = Conversion.parseStringOrNull(request.getParameter("altura"));
+		String alergias = Conversion.parseStringOrNull(request.getParameter("alergias"));
 		
 		int patientResult = patientService.createPatient(name, nome_social, cpf, rg, celular, residencial, email, cidade, bairro, rua, numero, 
-				dt_nascimento, sexo, convenio, indicacao, imc, cintura, peso, altura);
+				dt_nascimento, sexo, convenio, profissao, indicacao, imc, cintura, peso, altura, alergias);
 		if (patientResult > 0) {
 			return "redirect:/patient/read";			
 		} else {
