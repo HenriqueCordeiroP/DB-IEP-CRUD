@@ -20,6 +20,12 @@ public class DoctorController {
 
 	@GetMapping("/read")
 	public String read(Model model){
-		return "medico/read";
+		return "doctor/read";
 	}
 }
+
+@GetMapping("/create")
+	public String create() {
+		return "doctor/create";
+	}
+ 
