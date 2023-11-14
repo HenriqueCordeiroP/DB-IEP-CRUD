@@ -23,3 +23,9 @@ public class DoctorController {
 		return "doctor/read";
 	}
 }
+
+@GetMapping("/create")
+	public String create() {
+		return "doctor/create";
+	}
+ 
