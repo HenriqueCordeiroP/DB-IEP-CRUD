@@ -20,7 +20,7 @@
                 </a>
             </div>
             <div class="col-md-11 text-left">
-                <h1>Cadastrar Paciente</h1>
+                <h1>Editar Paciente</h1>
             </div>
         </div>
 
@@ -30,105 +30,106 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="nome">Nome:</label>
-                            <input type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva"
+                            <input th:value="${patient['nome']}" type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="cpf">CPF:</label>
-                            <input type="text" class="form-control" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX"
-                                pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}" required>
+                            <input th:value="${patient['cpf']}" type="text" class="form-control" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX"
+                               disabled pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}" >
                         </div>
 
                         <div class="form-group">
                             <label for="rg">RG:</label>
-                            <input type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" required>
+                            <input th:value="${patient['rg']}" type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" 
+                            disabled >
                         </div>
 
                         <div class="form-group">
                             <label for="email">Email:</label>
-                            <input type="email" class="form-control" id="email" name="email"
+                            <input th:value="${patient['email']}" type="email" class="form-control" id="email" name="email"
                                 placeholder="exemplo@email.com">
                         </div>
 
                         <div class="form-group">
                             <label for="cidade">Cidade:</label>
-                            <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife"
+                            <input th:value="${patient['cidade']}" type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="bairro">Bairro:</label>
-                            <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar"
+                            <input th:value="${patient['bairro']}" type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="rua">Rua:</label>
-                            <input type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde"
+                            <input th:value="${patient['rua']}" type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="numero">Número:</label>
-                            <input type="text" class="form-control" id="numero" name="numero" placeholder="123"
+                            <input th:value="${patient['numero']}" type="text" class="form-control" id="numero" name="numero" placeholder="123"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="alergias">Alergias:</label>
-                            <input type="text" class="form-control" id="alergias" name="alergias" placeholder="">
+                            <input th:value="${patient['alegias']}" type="text" class="form-control" id="alergias" name="alergias" placeholder="">
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="nome_social">Nome Social:</label>
-                            <input type="text" class="form-control" id="nome_social" name="nome_social" placeholder="">
+                            <input th:value="${patient.nome_social}" type="text" class="form-control" id="nome_social" name="nome_social" placeholder="">
                         </div>
 
                         <div class="form-group">
                             <label for="celular">Telefone Celular:</label>
-                            <input type="text" class="form-control" id="celular" name="celular"
+                            <input th:value="${patient.tel_celular}" type="text" class="form-control" id="celular" name="celular"
                                 placeholder="(00) 912341234 " required>
                         </div>
 
                         <div class="form-group">
                             <label for="residencial">Telefone Residencial:</label>
-                            <input type="text" class="form-control" id="residencial" name="residencial"
+                            <input th:value="${patient.tel_residencial}" type="text" class="form-control" id="residencial" name="residencial"
                                 placeholder="(00) 12341234 ">
                         </div>
 
                         <div class="form-group">
                             <label for="data_nascimento">Data de Nascimento:</label>
-                            <input type="date" class="form-control" id="data_nascimento" name="data_nascimento"
+                            <input th:value="${patient.dt_nascimento}" type="date" class="form-control" id="data_nascimento" name="data_nascimento"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="sexo">Sexo:</label>
                             <select class="form-control" id="sexo" name="sexo" required>
-                                <option value=""></option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
+                                <option th:selected="${patient.sexo == null}" value=""></option>
+                                <option th:selected="${patient.sexo == 'M'}" value="M">Masculino</option>
+                                <option th:selected="${patient.sexo == 'F'}" value="F">Feminino</option>
                             </select>
                         </div>
 
                         <div class="form-group">
                             <label for="profissao">Profissão:</label>
-                            <input type="text" class="form-control" id="profissao" niame="profissao"
+                            <input th:value="${patient.profissao}" type="text" class="form-control" id="profissao" niame="profissao"
                                 placeholder="Ex.: Estudante">
                         </div>
 
                         <div class="form-group">
                             <label for="convenio">Convênio:</label>
-                            <input type="text" class="form-control" id="convenio" name="convenio" placeholder="SUS"
+                            <input th:value="${patient.convenio}" type="text" class="form-control" id="convenio" name="convenio" placeholder="SUS"
                                 required>
                         </div>
 
                         <div class="form-group">
                             <label for="indicacao">Indicação:</label>
-                            <input type="text" class="form-control" id="indicacao" name="indicacao"
+                            <input th:value="${patient.quem_indicou}" type="text" class="form-control" id="indicacao" name="indicacao"
                                 placeholder="Dr. João da Silva">
                         </div>
 
@@ -143,30 +144,30 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="imc">IMC:</label>
-                                <input type="number" step=0.01 class="form-control" id="imc" name="imc" placeholder="32.1">
+                                <label th:value="${patient.imc}" for="imc">IMC:</label>
+                                <input type="text" step=0.01 class="form-control" id="imc" name="imc" placeholder="32.1">
                             </div>
     
                             <div class="form-group">
-                                <label for="cintura">Cintura em cm:</label>
-                                <input type="number" class="form-control" id="cintura" name="cintura" placeholder="98">
+                                <label for="cintura">Cintura abdominal em cm:</label>
+                                <input th:value="${patient.cintura_abdominal}" type="text" class="form-control" id="cintura" name="cintura" placeholder="98">
                             </div>
                         </div>
                         <div class="col-md-6">
     
                             <div class="form-group">
                                 <label for="peso">Peso em kg:</label>
-                                <input type="number" step=0.01 class="form-control" id="peso" name="peso" placeholder="85">
+                                <input th:value="${patient.peso}" type="text" step=0.01 class="form-control" id="peso" name="peso" placeholder="85">
                             </div>
     
                             <div class="form-group">
                                 <label for="altura">Altura em cm:</label>
-                                <input type="number" class="form-control" id="altura" name="altura" placeholder="172">
+                                <input th:value="${patient.altura}" type="text" class="form-control" id="altura" name="altura" placeholder="172">
                             </div>
 
                             <div class="form-group">
-                                <label for="pressao">Pressão em mmHg:</label>
-                                <input type="number" class="form-control" id="pressao" name="pressao" placeholder="100">
+                                <label for="pressao">Pressao em mmHg:</label>
+                                <input th:value="${patient.pressao}" type="text" class="form-control" id="pressao" name="pressao" placeholder="100">
                             </div>
                         </div>
                     </div>

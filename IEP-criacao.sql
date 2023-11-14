@@ -177,3 +177,14 @@ codigo_receita int,
 constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) references Remedio(nome, dosagem),
 constraint receita_fk foreign key (codigo_receita) references Receita(codigo)
 );
+
+insert into dados_do_paciente values(curdate(), null, 85, null, null, null, "098.035.454-42");
+select *
+FROM paciente p 
+JOIN pessoa pe ON p.cpf_pessoa = pe.cpf 
+JOIN email e ON p.cpf_pessoa = e.cpf_pessoa 
+LEFT JOIN( 
+SELECT * FROM dados_do_paciente ddp 
+WHERE ddp.dt_atualizacao <= curdate() 
+ORDER BY ddp.dt_atualizacao desc limit 1) ddp ON ddp.cpf_paciente = p.cpf_pessoa 
+WHERE cpf = "098.035.454-42";

@@ -20,6 +20,6 @@ public class DoctorController {
 
 	@GetMapping("/read")
 	public String read(Model model){
-		return "medico/read";
+		return "doctor/read";
 	}
 }
