@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:hx="https://github.com.wimdeblauwe/htmx-spring-boot-thymeleaf">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+    <div hx-trigger="load" hx-get="/components/navbar"></div>
+    <section class="mx-5 mt-5">
+        <div class="container">
+            <div class="d-flex justify-content-between">
+                <h1 class="title">Consultas agendadas</h1>
+                <a href="/appointment/create" class="invisible-link">
+                    <h1 class="title">+ Marcar Consulta</h1>
+                </a>
+            </div>
+        </div>
+    </section>
+    <section class="mx-5">
+        <div class="container">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Data</th>
+                        <th scope="col">Descrição</th>
+                        <th scope="col">Confirmada</th>
+                        <th scope="col">História Clínica</th>
+                        <th scope="col">CID</th>
+
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="appointment : ${appointment}">
+                        <td th:text="${appointment.Data}"></td>
+                        <td th:text="${appointment.Descricao}"></td>
+                        <td th:text="${appointment.Confirmada}"></td>
+                        <td th:text="${appointment.Historia_Clinica}"></td>
+                        <td th:text="${appointment.agendamento_dt}"></td>
+                        <td>
+                            <a class="invisible-link" th:href="@{'/appointment/edit/' + ${appointment['Data']}}">
+                                <img th:src="@{/images/edit.svg}" alt="Edit">
+                            </a>
+                            <a class="invisible-link" th:href="@{'/appointment/delete/' + ${appointment['Data']}}">
+                                <img th:src="@{/images/delete.svg}" alt="Delete">
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
