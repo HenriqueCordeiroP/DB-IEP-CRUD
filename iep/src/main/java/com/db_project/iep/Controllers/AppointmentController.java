@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.db_project.iep.Service.PatientService;
+import com.db_project.iep.Service.AppointmentService;
 
 import Utils.Conversion;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ import jakarta.servlet.http.HttpServletRequest;
 @Controller
 @RequestMapping("/appointment")
 public class AppointmentController {
-	private final PatientService appointmentService;
+	private final AppointmentService appointmentService;
 	
 	
 	public AppointmentController(AppointmentService appointmentService) {
