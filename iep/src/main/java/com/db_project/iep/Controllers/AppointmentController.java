@@ -66,7 +66,7 @@ public class AppointmentController {
 	public String update(HttpServletRequest request, @PathVariable String cpf) {
 		String data = Conversion.parseStringOrNull(request.getParameter("data"));
 		String descricao = Conversion.parseStringOrNull(request.getParameter("descricao"));
-		String confirmada = Conversion.parseStringOrNull(request.getParameter("confirmada"));
+		String confirmada = String.valueOf(request.getParameter("confirmada"));
 		String historia_clinica = Conversion.parseStringOrNull(request.getParameter("historia_clinica"));
 		String CID = Conversion.parseStringOrNull(request.getParameter("CID"));
 		int appointmentResult = appointmentService.updateAppointment(data, descricao, confirmada, historia_clinica, CID, cpf);
