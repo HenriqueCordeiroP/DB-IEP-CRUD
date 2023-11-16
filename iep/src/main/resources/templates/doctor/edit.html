@@ -13,12 +13,12 @@
   <div class="container-fluid">
     <div class="row mt-5">
       <div class="col-md-1 text-left">
-        <a class="invisible-link btn btn-primary" href="/patient/read">
+        <a class="invisible-link btn btn-primary" href="/doctor/read">
           Voltar
         </a>
       </div>
       <div class="col-md-11 text-left">
-        <h1>Cadastrar Médico</h1>
+        <h1>Editar Médico</h1>
       </div>
     </div>
 
@@ -28,91 +28,93 @@
           <div class="col-md-6">
             <div class="form-group">
               <label for="nome">Nome:</label>
-              <input type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva" required>
+              <input th:value="${doctor['nome']}" type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva" required>
             </div>
 
             <div class="form-group">
               <label for="cpf">CPF:</label>
-              <input type="text" class="form-control" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}" required>
+              <input th:value="${doctor['cpf']}" type="text" class="form-control" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" disabled pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}">
             </div>
 
             <div class="form-group">
               <label for="rg">RG:</label>
-              <input type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" required>
+              <input th:value="${doctor['rg']}" type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" disabled>
             </div>
 
             <div class="form-group">
               <label for="email">Email:</label>
-              <input type="email" class="form-control" id="email" name="email" placeholder="exemplo@email.com">
+              <input th:value="${doctor['email']}" type="email" class="form-control" id="email" name="email" placeholder="exemplo@email.com">
             </div>
 
             <div class="form-group">
               <label for="cidade">Cidade:</label>
-              <input type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife" required>
+              <input th:value="${doctor['cidade']}" type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife" required>
             </div>
 
             <div class="form-group">
               <label for="bairro">Bairro:</label>
-              <input type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar" required>
+              <input th:value="${doctor['bairro']}" type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar" required>
             </div>
 
             <div class="form-group">
               <label for="rua">Rua:</label>
-              <input type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" required>
+              <input th:value="${doctor['rua']}" type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" required>
             </div>
 
             <div class="form-group">
               <label for="numero">Número:</label>
-              <input type="text" class="form-control" id="numero" name="numero" placeholder="123" required>
+              <input th:value="${doctor['numero']}" type="text" class="form-control" id="numero" name="numero" placeholder="123" required>
             </div>
 
             <div class="form-group">
               <label for="crm">CRM:</label>
-              <input type="text" class="form-control" id="crm" name="crm" placeholder="">
+              <input th:value="${doctor['crm']}" type="text" class="form-control" id="crm" name="crm" placeholder="">
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="form-group">
               <label for="especialidade">Especialidade:</label>
-              <input type="text" class="form-control" id="especialidade" name="especialidade" placeholder="">
-            </div>
-
-            <div class="form-group">
-              <label for="rqe">RQE:</label>
-              <input type="text" class="form-control" id="rqe" name="rqe" placeholder="">
+              <input th:value="${doctor.especialidade}" type="text" class="form-control" id="especialidade" name="especialidade" placeholder="">
             </div>
 
             <div class="form-group">
               <label for="celular">Telefone Celular:</label>
-              <input type="text" class="form-control" id="celular" name="celular" placeholder="(00) 912341234 " required>
+              <input th:value="${doctor.tel_celular}" type="text" class="form-control" id="celular" name="celular" placeholder="(00) 912341234 " required>
             </div>
 
             <div class="form-group">
               <label for="residencial">Telefone Residencial:</label>
-              <input type="text" class="form-control" id="residencial" name="residencial" placeholder="(00) 12341234 ">
+              <input th:value="${doctor.tel_residencial}" type="text" class="form-control" id="residencial" name="residencial" placeholder="(00) 12341234 ">
             </div>
 
             <div class="form-group">
               <label for="data_nascimento">Data de Nascimento:</label>
-              <input type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
+              <input th:value="${doctor.dt_nascimento}" type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
             </div>
 
             <div class="form-group">
               <label for="sexo">Sexo:</label>
               <select class="form-control" id="sexo" name="sexo" required>
-                <option value=""></option>
-                <option value="M">Masculino</option>
-                <option value="F">Feminino</option>
+                <option th:selected="${doctor.sexo == null}" value=""></option>
+                <option th:selected="${doctor.sexo == 'M'}" value="M">Masculino</option>
+                <option th:selected="${doctor.sexo == 'F'}" value="F">Feminino</option>
               </select>
             </div>
 
+
+            <div class="form-group">
+              <label for="rqe">RQE:</label>
+              <input th:value="${doctor.quem_indicou}" type="text" class="form-control" id="rqe" name="rqe">
+            </div>
 
             <div class="form-group">
               <label for="image">Foto:</label>
               <input class="form-control" type="file" id="image" name="image" accept="image/*" />
             </div>
           </div>
+
+          <hr class="my-3" />
 
         </div>
 

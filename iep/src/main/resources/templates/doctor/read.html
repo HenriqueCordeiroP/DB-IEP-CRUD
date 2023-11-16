@@ -29,20 +29,18 @@
             <th scope="col">Nome </th>
             <th scope="col">Email</th>
             <th scope="col">Número</th>
-            <th scope="col">CRM</th>
+            <th scope="col">CPF</th>
             <th scope="col">Especialidade</th>
-            <th scope="col">RQE</th>
             <th scope="col"></th>
           </tr>
         </thead>
         <tbody>
           <tr th:each="medico: ${medicos}">
             <td th:text="${medico.nome}"></td>
+            <td th:text="${medico.cpf}"></td>
             <td th:text="${medico.email}"></td>
             <td th:text="${medico.tel_celular}"></td>
-            <td th:text="${medico.crm}"></td>
             <td th:text="${medico.especialidade}"></td>
-            <td th:text="${medico.rqe}"></td>
             <td></td>
           </tr>
         </tbody>
