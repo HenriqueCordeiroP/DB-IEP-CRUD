@@ -126,9 +126,11 @@ public class PatientService {
 	
 	public int deletePatient(String cpf) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
+		AppointmentService appointmentService = new AppointmentService(jdbcTemplate);
 		int emailResult = pessoaService.deleteEmail(cpf); 
 		int dadosResult = deleteDadosDoPaciente(cpf);
 		String sql = "DELETE FROM paciente p WHERE p.cpf_pessoa = ?";
+		appointmentService.removePatientFromAppointments(cpf);
 		int patientResult = jdbcTemplate.update(sql, cpf);
 		if (patientResult > 0 && emailResult > 0 && dadosResult > 0) {
 			return pessoaService.deletePessoa(cpf);

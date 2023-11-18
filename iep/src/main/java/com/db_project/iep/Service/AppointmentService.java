@@ -51,7 +51,6 @@ public class AppointmentService {
 	public int updateAppointment(String data, String descricao, String confirmada, String historia_clinica, String CID, String cpf, String cpf_medico) {
 		confirmada = "on".equals(confirmada) ? "true" : "false";
 		Boolean confirmed = Boolean.parseBoolean(confirmada);
-		System.out.println("AAAAAaaaaaaaaaaaa "+ confirmed);
 		String sql = "UPDATE consulta " +
 	                 "SET descricao = ?, confirmada = ?, historia_clinica = ?, " +
 	                 "cid = ? " +
@@ -65,4 +64,15 @@ public class AppointmentService {
 		return jdbcTemplate.update(sql, cpf, cpf_medico, data);
 	}
 
+	public int removeDoctorFromAppointments(String cpf_medico){
+		String sql = "UPDATE consulta SET cpf_medico = NULL WHERE cpf_medico = ?";
+
+		return jdbcTemplate.update(sql, cpf_medico);
+	}
+
+	public int removePatientFromAppointments(String cpf_paciente){
+		String sql = "UPDATE consulta SET cpf_paciente = NULL WHERE cpf_paciente = ?";
+
+		return jdbcTemplate.update(sql, cpf_paciente);
+	}
 }

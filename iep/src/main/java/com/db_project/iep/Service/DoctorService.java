@@ -27,14 +27,23 @@ public class DoctorService {
 		+"ORDER BY nome ASC");
 	}
 
+	public Map<String, Object> getDoctorByCPF(String cpf) {
+		String sql = "SELECT * " + 
+		"FROM medico m " +
+		"JOIN pessoa pe ON m.cpf_pessoa = pe.cpf " +
+		"JOIN email e ON m.cpf_pessoa = e.cpf_pessoa " + 
+		"WHERE cpf = ?";
+		return jdbcTemplate.queryForMap(sql, cpf);
+	}
+
 	public int createDoctor(String name, String cpf, String rg, String celular,String residencial,String email,String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo, String crm, String rqe, String especialidade) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
 		int pessoaResult = pessoaService.createPessoa(cpf, rg, name, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero);
 		int emailResult = pessoaService.createEmail(cpf, email);
 		int doctorResult = 0;
 		if (pessoaResult > 0 && emailResult > 0) {
-			String sql = "INSERT INTO medico VALUES(?, ?, ?, ?, ?)";
-			return jdbcTemplate.update(sql, crm, rqe, especialidade, cpf);
+			String sql = "INSERT INTO medico VALUES (?, ?, ?, ?)";
+			return jdbcTemplate.update(sql, cpf, crm, especialidade, rqe);
 		}
 		return doctorResult;
 	}
@@ -56,10 +65,12 @@ public class DoctorService {
 
 	public int deleteDoctor(String cpf) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
+		AppointmentService appointmentService = new AppointmentService(jdbcTemplate);
 		int emailResult = pessoaService.deleteEmail(cpf); 
-		String sql = "DELETE FROM medico m WHERE p.cpf_pessoa = ?";
+		String sql = "DELETE FROM medico m WHERE m.cpf_pessoa = ?";
+		appointmentService.removeDoctorFromAppointments(cpf);
 		int doctorResult = jdbcTemplate.update(sql, cpf);
-		if (doctorResult > 0 && emailResult > 0) {
+		if (doctorResult > 0 && emailResult > 0 ) {
 			return pessoaService.deletePessoa(cpf);
 		}
 		

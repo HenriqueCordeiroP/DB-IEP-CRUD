@@ -34,9 +34,41 @@ public class DoctorController {
 	}
 
 
-@GetMapping("/create")
+	@GetMapping("/create")
 	public String create() {
-		return "doctor/create";
+			return "doctor/create";
+	}
+
+	@GetMapping("/edit/{cpf}")
+	public String edit(@PathVariable String cpf, Model model){
+		Map<String, Object> doctor = doctorService.getDoctorByCPF(cpf);
+		model.addAttribute("doctor", doctor);
+		return "doctor/edit";
+	}
+
+	@PostMapping("/edit/{cpf}")
+	public String edit_form(HttpServletRequest request, @PathVariable String cpf){
+		String name = Conversion.parseStringOrNull(request.getParameter("nome"));
+		String celular = Conversion.parseStringOrNull(request.getParameter("celular"));
+		String residencial = Conversion.parseStringOrNull(request.getParameter("residencial"));
+		String email = Conversion.parseStringOrNull(request.getParameter("email"));
+		String cidade = Conversion.parseStringOrNull(request.getParameter("cidade"));
+		String bairro = Conversion.parseStringOrNull(request.getParameter("bairro"));
+		String rua = Conversion.parseStringOrNull(request.getParameter("rua"));
+		String numero = Conversion.parseStringOrNull(request.getParameter("numero"));
+		String dt_nascimento = Conversion.parseStringOrNull(request.getParameter("data_nascimento"));
+		String sexo = Conversion.parseStringOrNull(request.getParameter("sexo"));
+		String crm = Conversion.parseStringOrNull(request.getParameter("crm"));
+		String rqe = Conversion.parseStringOrNull(request.getParameter("rqe"));
+		String especialidade =Conversion.parseStringOrNull( request.getParameter("especialidade"));
+		
+		int doctorResult = doctorService.updateDoctor(name, cpf, name, celular, residencial, email, cidade, bairro, rua, numero, dt_nascimento, sexo, crm, rqe, especialidade);
+		if (doctorResult > 0) {
+			return "redirect:/doctor/read";			
+		} else {
+			// return error
+			return null;
+		}
 	}
 
 	@PostMapping("/create")
@@ -69,8 +101,8 @@ public class DoctorController {
 	
 	@GetMapping("/delete/{cpf}")
 	public String delete(@PathVariable String cpf) {
-		int patientResult = doctorService.deleteDoctor(cpf);
-		if (patientResult > 0) {
+		int doctorResult = doctorService.deleteDoctor(cpf);
+		if (doctorResult > 0) {
 			return "redirect:/doctor/read";			
 		}
 		return null;

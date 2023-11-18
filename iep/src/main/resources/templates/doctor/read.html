@@ -42,10 +42,10 @@
             <td th:text="${doctor.tel_celular}"></td>
             <td th:text="${doctor.nome_especialidade}"></td>
             <td>
-              <a class="invisible-link" th:href="@{'/doctor/edit/' + ${doctor['cpf']}}">
+              <a class="invisible-link" th:href="@{'/doctor/edit/' + ${doctor.cpf}}">
                 <img th:src="@{/images/edit.svg}" alt="Edit">
             </a>
-            <a class="invisible-link" th:href="@{'/doctor/delete/' + ${doctor['cpf']}}">
+            <a class="invisible-link" th:href="@{'/doctor/delete/' + ${doctor.cpf}}">
                 <img th:src="@{/images/delete.svg}" alt="Delete">
             </a>
             </td>
