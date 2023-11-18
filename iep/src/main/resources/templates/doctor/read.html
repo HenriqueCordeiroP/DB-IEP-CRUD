@@ -15,7 +15,7 @@
     <div class="container">
       <div class="d-flex justify-content-between">
         <h1 class="title">Médicos Cadastrados</h1>
-        <a href="#" class="invisible-link">
+        <a href="/doctor/create" class="invisible-link">
           <h1 class="title">+ Adicionar Médicos</h1>
         </a>
       </div>
@@ -35,13 +35,20 @@
           </tr>
         </thead>
         <tbody>
-          <tr th:each="medico: ${medicos}">
-            <td th:text="${medico.nome}"></td>
-            <td th:text="${medico.cpf}"></td>
-            <td th:text="${medico.email}"></td>
-            <td th:text="${medico.tel_celular}"></td>
-            <td th:text="${medico.especialidade}"></td>
-            <td></td>
+          <tr th:each="doctor: ${doctors}">
+            <td th:text="${doctor.nome}"></td>
+            <td th:text="${doctor.cpf}"></td>
+            <td th:text="${doctor.email}"></td>
+            <td th:text="${doctor.tel_celular}"></td>
+            <td th:text="${doctor.nome_especialidade}"></td>
+            <td>
+              <a class="invisible-link" th:href="@{'/doctor/edit/' + ${doctor['cpf']}}">
+                <img th:src="@{/images/edit.svg}" alt="Edit">
+            </a>
+            <a class="invisible-link" th:href="@{'/doctor/delete/' + ${doctor['cpf']}}">
+                <img th:src="@{/images/delete.svg}" alt="Delete">
+            </a>
+            </td>
           </tr>
         </tbody>
       </table>

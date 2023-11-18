@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.db_project.iep.Service.DoctorService;
-import com.db_project.iep.Service.PatientService;
 
 import Utils.Conversion;
 import jakarta.servlet.http.HttpServletRequest;

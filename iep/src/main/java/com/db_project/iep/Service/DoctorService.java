@@ -19,8 +19,8 @@ public class DoctorService {
 	}
 	
 	public List<Map<String, Object>> getDoctorList(){
-		return jdbcTemplate.queryForList("SELECT pe.nome, e.email, pe.tel_celular, m.nome_especialidade,pe.cpf"  
-		+"FROM medico m"
+		return jdbcTemplate.queryForList("SELECT pe.nome, e.email, pe.tel_celular, m.nome_especialidade,pe.cpf "  
+		+"FROM medico m "
 		+"JOIN pessoa pe ON m.cpf_pessoa = pe.cpf "
 		+"JOIN email e ON m.cpf_pessoa = e.cpf_pessoa "
 		+"GROUP BY pe.nome, e.email, pe.tel_celular , m.nome_especialidade "

@@ -178,13 +178,12 @@ constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) refere
 constraint receita_fk foreign key (codigo_receita) references Receita(codigo)
 );
 
-insert into dados_do_paciente values(curdate(), null, 85, null, null, null, "098.035.454-42");
-select *
-FROM paciente p 
-JOIN pessoa pe ON p.cpf_pessoa = pe.cpf 
-JOIN email e ON p.cpf_pessoa = e.cpf_pessoa 
-LEFT JOIN( 
-SELECT * FROM dados_do_paciente ddp 
-WHERE ddp.dt_atualizacao <= curdate() 
-ORDER BY ddp.dt_atualizacao desc limit 1) ddp ON ddp.cpf_paciente = p.cpf_pessoa 
-WHERE cpf = "098.035.454-42";
+SELECT COALESCE(p.nome_social, pe.nome) AS nome, c.cpf_paciente, c.dt_consulta, c.confirmada, c.descricao, c.cid, pm.nome as nome_medico, c.cpf_medico 
+FROM consulta c  
+JOIN paciente p ON p.cpf_pessoa = c.cpf_paciente  
+JOIN pessoa pe ON p.cpf_pessoa = pe.cpf  
+JOIN ( 
+SELECT m.cpf_pessoa, p2.nome FROM medico m JOIN pessoa p2 ON p2.cpf = m.cpf_pessoa 
+) pm ON pm.cpf_pessoa = c.cpf_medico 
+WHERE c.dt_consulta >= curdate()  
+ORDER BY c.dt_consulta asc;

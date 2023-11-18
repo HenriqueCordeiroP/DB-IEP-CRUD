@@ -28,27 +28,33 @@
             <table class="table">
                 <thead>
                     <tr>
-                        <th scope="col">Data</th>
+                        <th scope="col">Paciente</th>
+                        <th scope="col">CPF do Paciente</th>
                         <th scope="col">Descrição</th>
                         <th scope="col">Confirmada</th>
-                        <th scope="col">História Clínica</th>
                         <th scope="col">CID</th>
-
+                        <th scope="col">Data</th>
+                        <th scope="col">Médico</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr th:each="appointment : ${appointment}">
-                        <td th:text="${appointment.Data}"></td>
-                        <td th:text="${appointment.Descricao}"></td>
-                        <td th:text="${appointment.Confirmada}"></td>
-                        <td th:text="${appointment.Historia_Clinica}"></td>
-                        <td th:text="${appointment.agendamento_dt}"></td>
+                    <tr th:each="appointment : ${appointments}">
+                        <td th:text="${appointment.nome}"></td>
+                        <td th:text="${appointment.cpf_paciente}"></td>
+                        <td th:text="${appointment.descricao}"></td>
+                        <td th:switch="${appointment.confirmada}">
+                            <span th:case="true" class="text-success">Sim</span>
+                            <span th:case="false" class="text-danger">Não</span>
+                        </td>
+                        <td th:text="${appointment.cid}"></td>
+                        <td th:text="${appointment.dt_consulta}"></td>
+                        <td th:text="${appointment.nome_medico}"></td>
                         <td>
-                            <a class="invisible-link" th:href="@{'/appointment/edit/' + ${appointment['Data']}}">
+                            <a class="invisible-link" th:href="@{'/appointment/edit/' + ${appointment['cpf_paciente']} + '/' +  ${appointment['cpf_medico']} + '/' + ${appointment['dt_consulta']}}">
                                 <img th:src="@{/images/edit.svg}" alt="Edit">
                             </a>
-                            <a class="invisible-link" th:href="@{'/appointment/delete/' + ${appointment['Data']}}">
+                            <a class="invisible-link" th:href="@{'/appointment/delete/' + ${appointment['cpf_paciente']} + '/' +  ${appointment['cpf_medico']} + '/' + ${appointment['dt_consulta']}}">
                                 <img th:src="@{/images/delete.svg}" alt="Delete">
                             </a>
                         </td>

@@ -51,3 +51,7 @@
 .form-control{
     background-color: var(--verde-hover);
 }
+
+input[type="checkbox"] {
+    accent-color: var(--verde-IEP);
+}

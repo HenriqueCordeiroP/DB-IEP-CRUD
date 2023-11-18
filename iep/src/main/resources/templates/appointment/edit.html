@@ -30,7 +30,7 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="data">Data:</label>
-                            <input th:value="${appointment['data']}" type="date" class="form-control" id="date" name="date" placeholder=""
+                            <input th:value="${appointment['dt_consulta']}" type="date" class="form-control" id="data" name="data" placeholder=""
                                 required>
                         </div>
 
@@ -41,7 +41,7 @@
 
                         <div class="form-group">
                             <label for="confirmada">Confirmada:</label>
-                            <input th:value="${appointment['confirmada']}" type="checkbox" class="form-control" id="confirmada" name="confirmada" placeholder="">
+                            <input type="checkbox" id="confirmada" name="confirmada" th:checked="${appointment.confirmada}" />
                         </div>
 
                         <div class="form-group">
@@ -51,7 +51,7 @@
 
                         <div class="form-group">
                             <label for="CID">CID:</label>
-                            <input th:value="${appointment['CID']}" type="text" class="form-control" id="CID" name="CID" placeholder="">
+                            <input th:value="${appointment['cid']}" type="text" class="form-control" id="CID" name="CID" placeholder="">
                         </div>
 
                     </div>
