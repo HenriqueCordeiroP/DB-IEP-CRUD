@@ -42,7 +42,7 @@
 
                         <div class="form-group">
                             <label for="rg">RG:</label>
-                            <input type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" required>
+                            <input type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" pattern="[0-9]{1}.[0-9]{3}.[0-9]{3}" required>
                         </div>
 
                         <div class="form-group">
@@ -132,10 +132,10 @@
                                 placeholder="Dr. João da Silva">
                         </div>
 
-                        <div class="form-group">
+                        <!-- <div class="form-group">
                             <label for="image">Foto:</label>
                             <input class="form-control" type="file" id="image" name="image" accept="image/*" />
-                        </div>
+                        </div> -->
                     </div>
 
                     <hr class="my-3"/>

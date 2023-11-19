@@ -1,7 +1,4 @@
 package com.db_project.iep.Service;
-
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
 
@@ -36,45 +33,47 @@ public class DoctorService {
 		return jdbcTemplate.queryForMap(sql, cpf);
 	}
 
-	public int createDoctor(String name, String cpf, String rg, String celular,String residencial,String email,String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo, String crm, String rqe, String especialidade) {
+	public String createDoctor(Map<String, String> doctor) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		int pessoaResult = pessoaService.createPessoa(cpf, rg, name, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero);
-		int emailResult = pessoaService.createEmail(cpf, email);
-		int doctorResult = 0;
-		if (pessoaResult > 0 && emailResult > 0) {
+
+		String pessoaResult = pessoaService.createPessoa(doctor);
+		
+		String emailResult = pessoaService.createEmail(doctor);
+		if (pessoaResult == null && emailResult == null) {
 			String sql = "INSERT INTO medico VALUES (?, ?, ?, ?)";
-			return jdbcTemplate.update(sql, cpf, crm, especialidade, rqe);
+			try{
+				jdbcTemplate.update(sql, doctor.get("cpf"), doctor.get("crm"), doctor.get("especialidade"), doctor.get("rqe"));
+			} catch (Exception e){
+				return e.getMessage();
+			}
+		} else {
+			return pessoaResult;
 		}
-		return doctorResult;
+		return null;
 	}
 
-	public int updateDoctor(String name, String cpf, String rg, String celular,String residencial,String email,
-							  String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo,String crm, String rqe, String especialidade) {
+	public String updateDoctor(Map<String, String> doctor) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		int pessoaResult = pessoaService.updatePessoa(cpf, rg, name, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero);
-		pessoaService.createEmail(cpf, email);
-		int doctorResult = 0;
-		if (pessoaResult > 0) {
+
+		String pessoaResult = pessoaService.updatePessoa(doctor);
+		
+		pessoaService.createEmail(doctor);
+		if (pessoaResult == null) {
 			String sql = "UPDATE medico "
 			+ "SET crm = ?, rqe = ?, nome_especialidade = ?"
 			+ "WHERE cpf_pessoa = ?";
-			doctorResult = jdbcTemplate.update(sql, crm, rqe, especialidade, cpf);
+			try{
+				jdbcTemplate.update(sql, doctor.get("crm"), doctor.get("rqe"), doctor.get("especialidade"), doctor.get("cpf"));
+			} catch (Exception e ){
+				return e.getMessage();
+			}
 		}
-		return doctorResult;
+		return null;
 	}
 
 	public int deleteDoctor(String cpf) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		AppointmentService appointmentService = new AppointmentService(jdbcTemplate);
-		int emailResult = pessoaService.deleteEmail(cpf); 
-		String sql = "DELETE FROM medico m WHERE m.cpf_pessoa = ?";
-		appointmentService.removeDoctorFromAppointments(cpf);
-		int doctorResult = jdbcTemplate.update(sql, cpf);
-		if (doctorResult > 0 && emailResult > 0 ) {
-			return pessoaService.deletePessoa(cpf);
-		}
-		
-		return 0;
+		return pessoaService.deletePessoa(cpf);
 	}
 
 }

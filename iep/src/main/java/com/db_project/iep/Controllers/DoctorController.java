@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import com.db_project.iep.Service.DoctorService;
 
 import Utils.Conversion;
+import Utils.Parser;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -47,55 +48,30 @@ public class DoctorController {
 	}
 
 	@PostMapping("/edit/{cpf}")
-	public String edit_form(HttpServletRequest request, @PathVariable String cpf){
-		String name = Conversion.parseStringOrNull(request.getParameter("nome"));
-		String celular = Conversion.parseStringOrNull(request.getParameter("celular"));
-		String residencial = Conversion.parseStringOrNull(request.getParameter("residencial"));
-		String email = Conversion.parseStringOrNull(request.getParameter("email"));
-		String cidade = Conversion.parseStringOrNull(request.getParameter("cidade"));
-		String bairro = Conversion.parseStringOrNull(request.getParameter("bairro"));
-		String rua = Conversion.parseStringOrNull(request.getParameter("rua"));
-		String numero = Conversion.parseStringOrNull(request.getParameter("numero"));
-		String dt_nascimento = Conversion.parseStringOrNull(request.getParameter("data_nascimento"));
-		String sexo = Conversion.parseStringOrNull(request.getParameter("sexo"));
-		String crm = Conversion.parseStringOrNull(request.getParameter("crm"));
-		String rqe = Conversion.parseStringOrNull(request.getParameter("rqe"));
-		String especialidade =Conversion.parseStringOrNull( request.getParameter("especialidade"));
+	public String edit_form(HttpServletRequest request, @PathVariable String cpf, Model model){
+		Map<String, String> doctor = Parser.parseDoctorFromRequest(request);
 		
-		int doctorResult = doctorService.updateDoctor(name, cpf, name, celular, residencial, email, cidade, bairro, rua, numero, dt_nascimento, sexo, crm, rqe, especialidade);
-		if (doctorResult > 0) {
+		String doctorResult = doctorService.updateDoctor(doctor);
+		if (doctorResult == null) {
 			return "redirect:/doctor/read";			
 		} else {
-			// return error
+			model.addAttribute("errorMessage", doctorResult);
+			model.addAttribute("appointment", doctor);
 			return null;
 		}
 	}
 
 	@PostMapping("/create")
-	public String create_form(HttpServletRequest request) {
-		String name = Conversion.parseStringOrNull(request.getParameter("nome"));
-		String rg = Conversion.parseStringOrNull(request.getParameter("rg"));
-		String cpf = Conversion.parseStringOrNull(request.getParameter("cpf"));
-		String celular = Conversion.parseStringOrNull(request.getParameter("celular"));
-		String residencial = Conversion.parseStringOrNull(request.getParameter("residencial"));
-		String email = Conversion.parseStringOrNull(request.getParameter("email"));
-		String cidade = Conversion.parseStringOrNull(request.getParameter("cidade"));
-		String bairro = Conversion.parseStringOrNull(request.getParameter("bairro"));
-		String rua = Conversion.parseStringOrNull(request.getParameter("rua"));
-		String numero = Conversion.parseStringOrNull(request.getParameter("numero"));
-		String dt_nascimento = Conversion.parseStringOrNull(request.getParameter("data_nascimento"));
-		String sexo = Conversion.parseStringOrNull(request.getParameter("sexo"));
-		String crm = Conversion.parseStringOrNull(request.getParameter("crm"));
-		String rqe = Conversion.parseStringOrNull(request.getParameter("rqe"));
-		String especialidade =Conversion.parseStringOrNull( request.getParameter("especialidade"));
+	public String create_form(HttpServletRequest request, Model model) {
+		Map<String, String> doctor = Parser.parseDoctorFromRequest(request);
 		
-		int patientResult = doctorService.createDoctor(name, cpf, rg, celular, residencial, email, cidade, bairro, rua, numero, 
-				dt_nascimento, sexo, crm, rqe, especialidade);
-		if (patientResult > 0) {
+		String patientResult = doctorService.createDoctor(doctor);
+		if (patientResult == null) {
 			return "redirect:/doctor/read";			
 		} else {
-			// return error
-			return null;
+			model.addAttribute("errorMessage", patientResult);
+			model.addAttribute("appointment", doctor);
+			return "/doctor/create";
 		}
 	}
 	

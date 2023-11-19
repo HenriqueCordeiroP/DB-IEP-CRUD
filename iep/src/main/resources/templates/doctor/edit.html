@@ -27,7 +27,7 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="nome">Nome:</label>
+              <label for="nome">Nome*:</label>
               <input th:value="${doctor['nome']}" type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva" required>
             </div>
 
@@ -47,28 +47,28 @@
             </div>
 
             <div class="form-group">
-              <label for="cidade">Cidade:</label>
+              <label for="cidade">Cidade* :</label>
               <input th:value="${doctor['cidade']}" type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife" required>
             </div>
 
             <div class="form-group">
-              <label for="bairro">Bairro:</label>
+              <label for="bairro">Bairro*:</label>
               <input th:value="${doctor['bairro']}" type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar" required>
             </div>
 
             <div class="form-group">
-              <label for="rua">Rua:</label>
+              <label for="rua">Rua*:</label>
               <input th:value="${doctor['rua']}" type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" required>
             </div>
 
             <div class="form-group">
-              <label for="numero">Número:</label>
+              <label for="numero">Número*:</label>
               <input th:value="${doctor['numero']}" type="text" class="form-control" id="numero" name="numero" placeholder="123" required>
             </div>
 
             <div class="form-group">
-              <label for="crm">CRM:</label>
-              <input th:value="${doctor['crm']}" type="text" class="form-control" id="crm" name="crm" placeholder="">
+              <label for="crm">CRM*:</label>
+              <input th:value="${doctor['crm']}" type="text" class="form-control" id="crm" name="crm" placeholder="" required>
             </div>
           </div>
 
@@ -79,7 +79,7 @@
             </div>
 
             <div class="form-group">
-              <label for="celular">Telefone Celular:</label>
+              <label for="celular">Telefone Celular*:</label>
               <input th:value="${doctor.tel_celular}" type="text" class="form-control" id="celular" name="celular" placeholder="(00) 912341234 " required>
             </div>
 
@@ -89,12 +89,12 @@
             </div>
 
             <div class="form-group">
-              <label for="data_nascimento">Data de Nascimento:</label>
+              <label for="data_nascimento">Data de Nascimento*:</label>
               <input th:value="${doctor.dt_nascimento}" type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
             </div>
 
             <div class="form-group">
-              <label for="sexo">Sexo:</label>
+              <label for="sexo">Sexo*:</label>
               <select class="form-control" id="sexo" name="sexo" required>
                 <option th:selected="${doctor.sexo == null}" value=""></option>
                 <option th:selected="${doctor.sexo == 'M'}" value="M">Masculino</option>

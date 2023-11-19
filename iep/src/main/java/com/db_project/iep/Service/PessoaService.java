@@ -1,6 +1,10 @@
 package com.db_project.iep.Service;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -14,33 +18,48 @@ public class PessoaService {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 	
-	public int createPessoa(String cpf, String rg, String nome, String dt_nascimento, String sexo, String residencial, String celular,
-			String cidade, String bairro, String rua, String numero) {
+	public String createPessoa(Map<String, String> pessoa) {
 			String sql = "INSERT INTO pessoa (cpf, rg, nome, dt_nascimento, sexo, tel_residencial," + 
 									"tel_celular, cidade, bairro, rua, numero) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
-		return jdbcTemplate.update(sql, cpf, rg, nome, dt_nascimento, sexo, residencial, celular, cidade, 
-									bairro, rua, numero);
+		try{
+			jdbcTemplate.update(sql, pessoa.get("cpf"), pessoa.get("rg"), pessoa.get("nome"),
+			pessoa.get("data_nascimento"), pessoa.get("sexo"), pessoa.get("residencial"), pessoa.get("celular"), 
+			pessoa.get("cidade"), pessoa.get("bairro"), pessoa.get("rua"), pessoa.get("numero"));
+		} catch (DuplicateKeyException d){
+			if(d.getMessage().contains("cpf")){
+				return "Esse CPF já está registrado.";
+			} else if (d.getMessage().contains("rg")){
+				return "Esse RG já está registrado.";
+			}
+		}
+		return null;
 	}
 	
-	public int createEmail(String cpf, String email) {
+	public String createEmail(Map<String, String> pessoa) {
 		String sql = "INSERT INTO email VALUES(?, ?)";
 		
 		try{
-			int result = jdbcTemplate.update(sql, email , cpf);
-			return result;
-		} catch (Exception e){
+			jdbcTemplate.update(sql, pessoa.get("email") , pessoa.get("cpf"));
+		} catch (DuplicateKeyException d){
+		} catch(Exception e){
+			return e.getMessage();
 		}
-		return 0;
+		return null;
 	}
 	
-	public int updatePessoa(String cpf, String rg, String nome, String dt_nascimento, String sexo, String residencial, String celular,
-		String cidade, String bairro, String rua, String numero) {
+	public String updatePessoa(Map<String, String> pessoa) {
 		String sql = "UPDATE pessoa p "
 				   + "SET nome = ?, dt_nascimento = ?, sexo = ?, tel_residencial = ?, tel_celular = ?, "
 				   + "cidade = ?, bairro = ?, rua = ?, numero = ? "
 				   + "WHERE cpf = ?";
-		
-		return jdbcTemplate.update(sql, nome, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero, cpf);
+		try {
+			jdbcTemplate.update(sql, pessoa.get("nome"), pessoa.get("data_nascimento"), pessoa.get("sexo"),
+			 pessoa.get("residencial"), pessoa.get("celular"), pessoa.get("cidade"), pessoa.get("bairro"), 
+			 pessoa.get("rua"), pessoa.get("numero"), pessoa.get("cpf"));
+		} catch (Exception e){
+			return e.getMessage();
+		}
+		return null;
 	}
 	
 	public int deleteEmail(String cpf) {

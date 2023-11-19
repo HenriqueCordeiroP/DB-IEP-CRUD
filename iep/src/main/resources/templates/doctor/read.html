@@ -37,9 +37,9 @@
         <tbody>
           <tr th:each="doctor: ${doctors}">
             <td th:text="${doctor.nome}"></td>
-            <td th:text="${doctor.cpf}"></td>
             <td th:text="${doctor.email}"></td>
             <td th:text="${doctor.tel_celular}"></td>
+            <td th:text="${doctor.cpf}"></td>
             <td th:text="${doctor.nome_especialidade}"></td>
             <td>
               <a class="invisible-link" th:href="@{'/doctor/edit/' + ${doctor.cpf}}">
