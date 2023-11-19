@@ -199,22 +199,8 @@ constraint receita_fk foreign key (codigo_receita) references Receita(codigo) on
 );
 
 
-SELECT COALESCE(p.nome_social, pe.nome) AS nome, e.email, pe.tel_celular, p.cpf_pessoa,
-COALESCE(MIN(c.dt_consulta), '---') AS consulta_dt, COALESCE(MIN(a.dt_agendamento), '---') AS agendamento_dt
-FROM paciente p
-JOIN pessoa pe ON p.cpf_pessoa = pe.cpf 
-JOIN email e ON p.cpf_pessoa = e.cpf_pessoa  
-LEFT JOIN(
-SELECT cons.cpf_paciente, MAX(cons.dt_consulta) AS dt_consulta 
-FROM consulta cons 
-WHERE cons.dt_consulta <= CURDATE() 
-GROUP BY cons.cpf_paciente 
-) c ON p.cpf_pessoa = c.cpf_paciente 
-LEFT JOIN (
-SELECT ag.cpf_paciente, MIN(ag.dt_agendamento) AS dt_agendamento 
-FROM agendamento ag 
-WHERE ag.dt_agendamento >= CURDATE() 
-GROUP BY ag.cpf_paciente 
-) a ON p.cpf_pessoa = c.cpf_paciente 
-GROUP BY COALESCE(p.nome_social, pe.nome), e.email, pe.tel_celular 
-ORDER BY nome ASC;
+
+SELECT cpf_paciente, COUNT(*) AS appointment_count
+FROM consulta
+GROUP BY cpf_paciente
+order by appointment_count desc limit 1;

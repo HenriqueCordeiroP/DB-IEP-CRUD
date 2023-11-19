@@ -91,7 +91,7 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="alergias">Alergias*:</label>
+                            <label for="alergias">Alergias:</label>
                             <input th:unless="${patient}" type="text" class="form-control" id="alergias" name="alergias" placeholder="">
                             <input th:if="${patient}" th:value="${patient['alergias']}" type="text" class="form-control" id="alergias" name="alergias" placeholder="">
                         </div>

@@ -68,3 +68,23 @@ input[type="checkbox"] {
 .text-main:hover{
     opacity: 80%;
 }
+
+.btn-outline-primary.dropdown-toggle {
+    color: #fff;
+    background-color: #179349;
+    border-color: #179349;
+}
+
+.btn-outline-primary.dropdown-toggle:hover {
+    color: #fff;
+    background-color: #136e2c;
+    border-color: #136e2c;
+}
+
+.dropdown-item {
+    color: #179349;
+}
+
+.dropdown-item:hover {
+    color: #fff;
+}

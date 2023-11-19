@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -149,5 +148,9 @@ public class PatientService {
 
 		return jdbcTemplate.update(sql, cpf);
 	}
+	// TODO: Select on consulta creation, report 
+	// public Map<String, String> generateReportInfo(){
+	// 	String sql = "";
+	// }
 
 }	

@@ -87,4 +87,9 @@ public class PatientController {
 		}
 		return null;
 	}
+
+	@GetMapping("/report")
+	public String report(){
+		return "/patient/report";
+	}
 }
