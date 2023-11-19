@@ -79,18 +79,18 @@
             </div>
 
             <div class="form-group">
-              <label for="celular">Telefone Celular*:</label>
-              <input th:value="${doctor.tel_celular}" type="text" class="form-control" id="celular" name="celular" placeholder="(00) 912341234 " required>
+              <label for="tel_celular">Telefone Celular*:</label>
+              <input th:value="${doctor.tel_celular}" type="text" class="form-control" id="tel_celular" name="tel_celular" placeholder="(00) 912341234 " required>
             </div>
 
             <div class="form-group">
-              <label for="residencial">Telefone Residencial:</label>
-              <input th:value="${doctor.tel_residencial}" type="text" class="form-control" id="residencial" name="residencial" placeholder="(00) 12341234 ">
+              <label for="tel_residencial">Telefone Residencial:</label>
+              <input th:value="${doctor.tel_residencial}" type="text" class="form-control" id="tel_residencial" name="tel_residencial" placeholder="(00) 12341234 ">
             </div>
 
             <div class="form-group">
-              <label for="data_nascimento">Data de Nascimento*:</label>
-              <input th:value="${doctor.dt_nascimento}" type="date" class="form-control" id="data_nascimento" name="data_nascimento" required>
+              <label for="dt_nascimento">Data de Nascimento*:</label>
+              <input th:value="${doctor.dt_nascimento}" type="date" class="form-control" id="dt_nascimento" name="dt_nascimento" required>
             </div>
 
             <div class="form-group">
@@ -108,13 +108,12 @@
               <input th:value="${doctor.rqe}" type="text" class="form-control" id="rqe" name="rqe">
             </div>
 
-            <div class="form-group">
+            <!-- <div class="form-group">
               <label for="image">Foto:</label>
               <input class="form-control" type="file" id="image" name="image" accept="image/*" />
-            </div>
+            </div> -->
+            
           </div>
-
-          <hr class="my-3" />
 
         </div>
 
@@ -122,6 +121,10 @@
           <div class="col-md-12 my-3">
             <input class="btn btn-primary form-control" type="submit" value="Salvar" name="submit">
           </div>
+
+          <p th:if="${errorMessage}" style="color: red;">
+            <span th:text="${errorMessage}"></span>
+          </p>
         </div>
       </div>
     </form>

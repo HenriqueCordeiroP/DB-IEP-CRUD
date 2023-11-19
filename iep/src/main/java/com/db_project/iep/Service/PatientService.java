@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -41,25 +42,29 @@ public class PatientService {
 				+ "ORDER BY nome ASC");
 	}
 	
-	public int createPatient(String name, String nome_social, String cpf, String rg, String celular,String residencial,String email,
-							  String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo,String convenio, 
-							  String profissao, String indicacao, String imc,String cintura,String peso,String altura, String alergias, String pressao) {
+	public String createPatient(Map<String, String> patient) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		int pessoaResult = pessoaService.createPessoa(cpf, rg, name, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero);
-		int emailResult = pessoaService.createEmail(cpf, email);
-		int patientResult = 0;
-		if (pessoaResult > 0 && emailResult > 0) {
+		String pessoaResult = pessoaService.createPessoa(patient);
+		String emailResult = pessoaService.createEmail(patient);
+		if (pessoaResult == null && emailResult == null) {
 			String sql = "INSERT INTO paciente VALUES(?, ?, ?, ?, ?, ?)";
-			patientResult = jdbcTemplate.update(sql, alergias, nome_social, indicacao, convenio, profissao, cpf);
+			try{
+				jdbcTemplate.update(sql, patient.get("alergias"), patient.get("nome_social"),
+				patient.get("quem_indicou"), patient.get("convenio"), patient.get("profissao"), patient.get("cpf"));
+			} catch(Exception e){
+				return e.getMessage();
+			}
+		} else{
+			jdbcTemplate.update("ROLLBACK");
+			return pessoaResult != null ? pessoaResult : emailResult;
 		}
-		if (imc != null || cintura != null || peso != null || altura != null){
-			createNewDadosDoPaciente(imc, cintura, peso, altura, pressao, cpf);
+		if (patient.get("imc") != null || patient.get("cintura") != null || patient.get("peso") != null || patient.get("altura") != null){
+			createNewDadosDoPaciente(patient);
 		} 
-		return patientResult;
+		return null;
 	}
 
-	public int createNewDadosDoPaciente(String imc_string,String cintura_string ,String peso_string,String altura_string,
-			String pressao_string, String cpf){
+	public int createNewDadosDoPaciente(Map<String, String> patient){
 		LocalDate currentDate = LocalDate.now();
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd"); 
 		String today = currentDate.format(formatter);
@@ -69,27 +74,32 @@ public class PatientService {
 		Float altura = null;
 		Float pressao = null;
 		try{
-			imc = Float.parseFloat(imc_string); 
+			imc = Float.parseFloat(patient.get("imc")); 
 		} catch (Exception e){
 		}
 		try{
-			cintura = Float.parseFloat(cintura_string); 
+			cintura = Float.parseFloat(patient.get("cintura")); 
 		} catch (Exception e){
 		}
 		try{
-			peso = Float.parseFloat(peso_string); 
+			peso = Float.parseFloat(patient.get("peso")); 
 		} catch (Exception e){
 		}
 		try{
-			altura = Float.parseFloat(altura_string); 
+			altura = Float.parseFloat(patient.get("altura")); 
 		} catch (Exception e){
 		}
 		try{
-			pressao = Float.parseFloat(pressao_string); 
+			pressao = Float.parseFloat(patient.get("pressao")); 
 		} catch (Exception e){
 		}
 		String sql = "INSERT INTO dados_do_paciente VALUES(?, ?, ?, ? ,?, ?, ?)";
-		return jdbcTemplate.update(sql, today, imc, cintura, peso, altura, pressao, cpf);
+		try{
+			jdbcTemplate.update(sql, today, imc, cintura, altura, peso, pressao, patient.get("cpf"));
+		}catch(Exception e){
+			System.out.println(e.getMessage());
+		}
+		return 1;
 	}
 	
 	public Map<String, Object> getPacienteByCPF(String cpf) {
@@ -105,37 +115,32 @@ public class PatientService {
 		return jdbcTemplate.queryForMap(sql, cpf);
 	}
 	
-	public int updatePaciente(String name, String nome_social, String cpf, String rg, String celular,String residencial,String email,
-							  String cidade, String bairro, String rua, String numero, String dt_nascimento, String sexo,String convenio, 
-							  String profissao, String indicacao, String imc,String cintura,String peso,String altura, String alergias, String pressao) {
+	public String updatePaciente(Map<String, String> patient) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		int pessoaResult = pessoaService.updatePessoa(cpf, rg, name, dt_nascimento, sexo, residencial, celular, cidade, bairro, rua, numero);
-		pessoaService.createEmail(cpf, email);
-		int patientResult = 0;
-		if (pessoaResult > 0) {
+		String pessoaResult = pessoaService.updatePessoa(patient);
+		String emailResult = pessoaService.createEmail(patient);
+		if (pessoaResult == null && emailResult == null) {
 			String sql = "UPDATE paciente "
 			+ "SET alergias = ?, nome_social = ?, quem_indicou = ?, convenio = ?, profissao = ? "
 			+ "WHERE cpf_pessoa = ?";
-			patientResult = jdbcTemplate.update(sql, alergias, nome_social, indicacao, convenio, profissao, cpf);
+			try{
+				jdbcTemplate.update(sql, patient.get("alergias"), patient.get("nome_social"),
+				patient.get("quem_indicou"), patient.get("convenio"), patient.get("profissao"), patient.get("cpf"));
+			} catch(Exception e){
+				return e.getMessage();
+			}
+		} else {
+			return pessoaResult != null ? pessoaResult : emailResult;
 		}
-		if (imc != null || cintura != null || peso != null || altura != null){
-			createNewDadosDoPaciente(imc, cintura, peso, altura, pressao, cpf);
+		if (patient.get("imc") != null || patient.get("cintura") != null || patient.get("peso") != null || patient.get("altura") != null){
+			createNewDadosDoPaciente(patient);
 		} 
-		return patientResult;
+		return null;
 	}
 	
 	public int deletePatient(String cpf) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
-		AppointmentService appointmentService = new AppointmentService(jdbcTemplate);
-		int emailResult = pessoaService.deleteEmail(cpf); 
-		int dadosResult = deleteDadosDoPaciente(cpf);
-		String sql = "DELETE FROM paciente p WHERE p.cpf_pessoa = ?";
-		appointmentService.removePatientFromAppointments(cpf);
-		int patientResult = jdbcTemplate.update(sql, cpf);
-		if (patientResult > 0 && emailResult > 0 && dadosResult > 0) {
-			return pessoaService.deletePessoa(cpf);
-		}
-		
+		pessoaService.deletePessoa(cpf);		
 		return 0;
 	}
 
@@ -145,4 +150,4 @@ public class PatientService {
 		return jdbcTemplate.update(sql, cpf);
 	}
 
-}
+}	

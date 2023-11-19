@@ -71,7 +71,6 @@ public class AppointmentController {
 	public String update(Model model, HttpServletRequest request, @PathVariable String cpf, @PathVariable String cpf_medico, @PathVariable String data_original) {
 		Map<String, String> appointment = Parser.parseAppointmentFromRequest(request);
 		String appointmentResult = null;
-
 		if(!appointment.get("data").equals(data_original)){
 			appointmentService.deleteAppointment(cpf, cpf_medico, data_original);
 			appointmentResult = appointmentService.createAppointment(appointment);

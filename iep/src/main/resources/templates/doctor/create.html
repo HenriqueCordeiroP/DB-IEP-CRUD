@@ -64,11 +64,13 @@
 
             <div class="form-group">
               <label for="rua">Rua*:</label>
+              <input type="text" th:unless="${doctor}" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" required>
               <input type="text" th:if="${doctor}" th:value="${doctor['rua']}" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" required>
             </div>
 
             <div class="form-group">
               <label for="numero">Número*:</label>
+              <input type="text" th:unless="${doctor}" class="form-control" id="numero" name="numero" placeholder="123" required>
               <input type="text" th:if="${doctor}" th:value="${doctor['numero']}" class="form-control" id="numero" name="numero" placeholder="123" required>
             </div>
 
@@ -93,21 +95,21 @@
             </div>
 
             <div class="form-group">
-              <label for="celular">Telefone Celular*:</label>
-              <input type="text" th:unless="${doctor}" class="form-control" id="celular" name="celular" placeholder="(00) 912341234 " required>
-              <input type="text" th:if="${doctor}" th:value="${doctor['tel_celular']}" class="form-control" id="celular" name="celular" placeholder="(00) 912341234 " required>
+              <label for="tel_celular">Telefone Celular*:</label>
+              <input type="text" th:unless="${doctor}" class="form-control" id="tel_celular" name="tel_celular" placeholder="(00) 912341234 " required>
+              <input type="text" th:if="${doctor}" th:value="${doctor['tel_celular']}" class="form-control" id="tel_celular" name="tel_celular" placeholder="(00) 912341234 " required>
             </div>
 
             <div class="form-group">
-              <label for="residencial">Telefone Residencial:</label>
-              <input type="text" th:unless="${doctor}" class="form-control" id="residencial" name="residencial" placeholder="(00) 12341234 ">
-              <input type="text" th:if="${doctor}" th:value="${doctor['tel_residencial']}" class="form-control" id="residencial" name="residencial" placeholder="(00) 12341234 ">
+              <label for="tel_residencial">Telefone Residencial:</label>
+              <input type="text" th:unless="${doctor}" class="form-control" id="tel_residencial" name="tel_residencial" placeholder="(00) 12341234 ">
+              <input type="text" th:if="${doctor}" th:value="${doctor['tel_residencial']}" class="form-control" id="tel_residencial" name="tel_residencial" placeholder="(00) 12341234 ">
             </div>
 
             <div class="form-group">
-              <label for="data_nascimento">Data de Nascimento*:</label>
-              <input type="date" th:unless="${doctor}" class="form-control" id="data_nascimento" name="data_nascimento" required>
-              <input type="date" th:if="${doctor}" th:value="${doctor['dt_nascimento']}" class="form-control" id="data_nascimento" name="data_nascimento" required>
+              <label for="dt_nascimento">Data de Nascimento*:</label>
+              <input type="date" th:unless="${doctor}" class="form-control" id="dt_nascimento" name="dt_nascimento" required>
+              <input type="date" th:if="${doctor}" th:value="${doctor['dt_nascimento']}" class="form-control" id="dt_nascimento" name="dt_nascimento" required>
             </div>
 
             <div class="form-group">

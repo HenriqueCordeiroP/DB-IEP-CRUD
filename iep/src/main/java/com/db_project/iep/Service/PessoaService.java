@@ -23,9 +23,10 @@ public class PessoaService {
 									"tel_celular, cidade, bairro, rua, numero) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
 		try{
 			jdbcTemplate.update(sql, pessoa.get("cpf"), pessoa.get("rg"), pessoa.get("nome"),
-			pessoa.get("data_nascimento"), pessoa.get("sexo"), pessoa.get("residencial"), pessoa.get("celular"), 
+			pessoa.get("dt_nascimento"), pessoa.get("sexo"), pessoa.get("tel_residencial"), pessoa.get("tel_celular"), 
 			pessoa.get("cidade"), pessoa.get("bairro"), pessoa.get("rua"), pessoa.get("numero"));
 		} catch (DuplicateKeyException d){
+			System.out.println(d.getMessage());
 			if(d.getMessage().contains("cpf")){
 				return "Esse CPF já está registrado.";
 			} else if (d.getMessage().contains("rg")){
@@ -41,6 +42,10 @@ public class PessoaService {
 		try{
 			jdbcTemplate.update(sql, pessoa.get("email") , pessoa.get("cpf"));
 		} catch (DuplicateKeyException d){
+		}catch(UncategorizedSQLException u){
+			if(u.getMessage().contains(("email_chk_1"))){
+				return "Endereço de email inválido.";
+			}
 		} catch(Exception e){
 			return e.getMessage();
 		}
@@ -53,8 +58,8 @@ public class PessoaService {
 				   + "cidade = ?, bairro = ?, rua = ?, numero = ? "
 				   + "WHERE cpf = ?";
 		try {
-			jdbcTemplate.update(sql, pessoa.get("nome"), pessoa.get("data_nascimento"), pessoa.get("sexo"),
-			 pessoa.get("residencial"), pessoa.get("celular"), pessoa.get("cidade"), pessoa.get("bairro"), 
+			jdbcTemplate.update(sql, pessoa.get("nome"), pessoa.get("dt_nascimento"), pessoa.get("sexo"),
+			 pessoa.get("tel_residencial"), pessoa.get("tel_celular"), pessoa.get("cidade"), pessoa.get("bairro"), 
 			 pessoa.get("rua"), pessoa.get("numero"), pessoa.get("cpf"));
 		} catch (Exception e){
 			return e.getMessage();

@@ -74,9 +74,9 @@ public class AppointmentService {
 	                 "cid = ? " +
 	                 "WHERE cpf_paciente = ? AND cpf_medico = ? AND dt_consulta = ?";
 		try {
-				jdbcTemplate.update(sql, appointment.get("descricao"), confirmed, 
-				appointment.get("historia_clinica"), appointment.get("CID"), appointment.get("cpf"),
-				appointment.get("cpf_medico"), appointment.get("data"));
+			jdbcTemplate.update(sql, appointment.get("descricao"), confirmed, 
+			appointment.get("historia_clinica"), appointment.get("CID"), appointment.get("cpf"),
+			appointment.get("cpf_medico"), appointment.get("data"));
 		} catch (UncategorizedSQLException u){
 			if(u.getMessage().contains("Invalid date for Consulta")){
 				return "A data deve ser posterior a hoje.";

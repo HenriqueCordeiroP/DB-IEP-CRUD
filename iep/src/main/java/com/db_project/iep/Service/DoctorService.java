@@ -47,7 +47,8 @@ public class DoctorService {
 				return e.getMessage();
 			}
 		} else {
-			return pessoaResult;
+			jdbcTemplate.update("ROLLBACK");
+			return pessoaResult != null ? pessoaResult : emailResult;
 		}
 		return null;
 	}

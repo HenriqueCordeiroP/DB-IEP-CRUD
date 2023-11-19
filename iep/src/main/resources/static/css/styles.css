@@ -2,6 +2,7 @@
 :root{
     --verde-IEP: #179349;
     --verde-hover: #B0F5C3;
+    --disabled: #D3D3D3;
 }
 
 .logo{
@@ -54,4 +55,8 @@
 
 input[type="checkbox"] {
     accent-color: var(--verde-IEP);
+}
+
+.readonly{
+    background-color: var(--disabled) !important;
 }
