@@ -18,7 +18,8 @@
         </a>
       </div>
       <div class="col-md-11 text-left">
-        <h1>Editar Médico</h1>
+        <h1 th:if="${doctor.sexo == 'F'}">Dados da Dra. <span th:text="${doctor.nome}"></span></h1>
+        <h1 th:if="${doctor.sexo == 'M'}">Dados do Dr. <span th:text="${doctor.nome}"></span></h1>
       </div>
     </div>
 
@@ -27,75 +28,75 @@
         <div class="row">
           <div class="col-md-6">
             <div class="form-group">
-              <label for="nome">Nome*:</label>
-              <input th:value="${doctor['nome']}" type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva" required>
+              <label for="nome">Nome:</label>
+              <input th:value="${doctor['nome']}" type="text" class="form-control" id="nome" name="nome" placeholder="João da Silva" readonly>
             </div>
 
             <div class="form-group">
               <label for="cpf">CPF:</label>
-              <input th:value="${doctor['cpf']}" type="text" class="form-control readonly" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" readonly pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}">
+              <input th:value="${doctor['cpf']}" type="text" class="form-control" id="cpf" name="cpf" placeholder="XXX.XXX.XXX-XX" pattern="[0-9]{3}.[0-9]{3}.[0-9]{3}-[0-9]{2}" readonly>
             </div>
 
             <div class="form-group">
               <label for="rg">RG:</label>
-              <input th:value="${doctor['rg']}" type="text" class="form-control readonly" id="rg" name="rg" placeholder="X.XXX.XXX" readonly>
+              <input th:value="${doctor['rg']}" type="text" class="form-control" id="rg" name="rg" placeholder="X.XXX.XXX" readonly>
             </div>
 
             <div class="form-group">
               <label for="email">Email:</label>
-              <input th:value="${doctor['email']}" type="email" class="form-control" id="email" name="email" placeholder="exemplo@email.com">
+              <input th:value="${doctor['email']}" type="email" class="form-control" id="email" name="email" placeholder="exemplo@email.com" readonly>
             </div>
 
             <div class="form-group">
-              <label for="cidade">Cidade* :</label>
-              <input th:value="${doctor['cidade']}" type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife" required>
+              <label for="cidade">Cidade :</label>
+              <input th:value="${doctor['cidade']}" type="text" class="form-control" id="cidade" name="cidade" placeholder="Recife" readonly>
             </div>
 
             <div class="form-group">
-              <label for="bairro">Bairro*:</label>
-              <input th:value="${doctor['bairro']}" type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar" required>
+              <label for="bairro">Bairro:</label>
+              <input th:value="${doctor['bairro']}" type="text" class="form-control" id="bairro" name="bairro" placeholder="Bem Estar" readonly>
             </div>
 
             <div class="form-group">
-              <label for="rua">Rua*:</label>
-              <input th:value="${doctor['rua']}" type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" required>
+              <label for="rua">Rua:</label>
+              <input th:value="${doctor['rua']}" type="text" class="form-control" id="rua" name="rua" placeholder="Rua da Saúde" readonly>
             </div>
 
             <div class="form-group">
-              <label for="numero">Número*:</label>
-              <input th:value="${doctor['numero']}" type="text" class="form-control" id="numero" name="numero" placeholder="123" required>
+              <label for="numero">Número:</label>
+              <input th:value="${doctor['numero']}" type="text" class="form-control" id="numero" name="numero" placeholder="123" readonly>
             </div>
 
             <div class="form-group">
-              <label for="crm">CRM*:</label>
-              <input th:value="${doctor['crm']}" type="text" class="form-control" id="crm" name="crm" placeholder="" required>
+              <label for="crm">CRM:</label>
+              <input th:value="${doctor['crm']}" type="text" class="form-control" id="crm" name="crm" placeholder="" readonly>
             </div>
           </div>
 
           <div class="col-md-6">
             <div class="form-group">
               <label for="especialidade">Especialidade:</label>
-              <input th:value="${doctor.nome_especialidade}" type="text" class="form-control" id="especialidade" name="especialidade" placeholder="">
+              <input th:value="${doctor.nome_especialidade}" type="text" class="form-control" id="especialidade" name="especialidade" placeholder="" readonly>
             </div>
 
             <div class="form-group">
-              <label for="tel_celular">Telefone Celular*:</label>
-              <input th:value="${doctor.tel_celular}" type="text" class="form-control" id="tel_celular" name="tel_celular" placeholder="(00) 912341234 " required>
+              <label for="tel_celular">Telefone Celular:</label>
+              <input th:value="${doctor.tel_celular}" type="text" class="form-control" id="tel_celular" name="tel_celular" placeholder="(00) 912341234 " readonly>
             </div>
 
             <div class="form-group">
               <label for="tel_residencial">Telefone Residencial:</label>
-              <input th:value="${doctor.tel_residencial}" type="text" class="form-control" id="tel_residencial" name="tel_residencial" placeholder="(00) 12341234 ">
+              <input th:value="${doctor.tel_residencial}" type="text" class="form-control" id="tel_residencial" name="tel_residencial" placeholder="(00) 12341234 " readonly>
             </div>
 
             <div class="form-group">
-              <label for="dt_nascimento">Data de Nascimento*:</label>
-              <input th:value="${doctor.dt_nascimento}" type="date" class="form-control" id="dt_nascimento" name="dt_nascimento" required>
+              <label for="dt_nascimento">Data de Nascimento:</label>
+              <input th:value="${doctor.dt_nascimento}" type="date" class="form-control" id="dt_nascimento" name="dt_nascimento" readonly>
             </div>
 
             <div class="form-group">
-              <label for="sexo">Sexo*:</label>
-              <select class="form-control" id="sexo" name="sexo" required>
+              <label for="sexo">Sexo:</label>
+              <select class="form-control" id="sexo" name="sexo" readonly>
                 <option th:selected="${doctor.sexo == null}" value=""></option>
                 <option th:selected="${doctor.sexo == 'M'}" value="M">Masculino</option>
                 <option th:selected="${doctor.sexo == 'F'}" value="F">Feminino</option>
@@ -105,12 +106,12 @@
 
             <div class="form-group">
               <label for="rqe">RQE:</label>
-              <input th:value="${doctor.rqe}" type="text" class="form-control" id="rqe" name="rqe">
+              <input th:value="${doctor.rqe}" type="text" class="form-control" id="rqe" name="rqe" readonly>
             </div>
 
             <!-- <div class="form-group">
               <label for="image">Foto:</label>
-              <input class="form-control" type="file" id="image" name="image" accept="image/*" />
+              <input class="form-control" type="file" id="image" name="image" accept="image/" />
             </div> -->
             
           </div>
@@ -119,7 +120,7 @@
 
         <div class="row">
           <div class="col-md-12 my-3">
-            <input class="btn btn-primary form-control" type="submit" value="Salvar" name="submit">
+            <input class="btn btn-primary form-control" type="submit" value="Salvar" name="submit" readonly>
           </div>
 
           <p th:if="${errorMessage}" style="color: red;">

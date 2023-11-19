@@ -33,6 +33,13 @@ public class PatientController {
 		return "patient/read";
 	}
 	
+	@GetMapping("/read/{cpf}")
+	public String read(Model model, @PathVariable String cpf){
+		Map<String, Object> patient = patientService.getPacienteByCPF(cpf);
+		model.addAttribute("patient", patient);
+		return "patient/read_one.html";
+	}
+
 	@GetMapping("/edit/{cpf}")
 	public String edit(@PathVariable String cpf, Model model){
 		Map<String, Object> patient = patientService.getPacienteByCPF(cpf);

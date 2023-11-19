@@ -32,6 +32,13 @@ public class AppointmentController {
 		model.addAttribute("appointments", appointments);
 		return "appointment/read";
 	}
+
+	@GetMapping("/read/{cpf_paciente}/{cpf_medico}/{data}")
+	public String read(Model model, @PathVariable String cpf_paciente, @PathVariable String cpf_medico, @PathVariable String data  ){
+		Map<String, Object> appointment = appointmentService.getAppointmentByCPF(cpf_paciente, cpf_medico, data);
+		model.addAttribute("appointment", appointment);
+		return "appointment/read_one";
+	}
 	
 	@GetMapping("/create")
 	public String create(HttpServletRequest request) {

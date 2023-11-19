@@ -36,7 +36,9 @@
         </thead>
         <tbody>
           <tr th:each="doctor: ${doctors}">
-            <td th:text="${doctor.nome}"></td>
+            <td>
+                <a class="invisible-link text-main" th:href="@{'/doctor/read/'} + ${doctor['cpf']}" th:text="${doctor.nome}"></a>
+            </td>
             <td th:text="${doctor.email}"></td>
             <td th:text="${doctor.tel_celular}"></td>
             <td th:text="${doctor.cpf}"></td>

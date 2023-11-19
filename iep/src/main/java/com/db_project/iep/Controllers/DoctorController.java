@@ -34,6 +34,12 @@ public class DoctorController {
 		return "doctor/read";
 	}
 
+	@GetMapping("/read/{cpf}")
+	public String read(Model model, @PathVariable String cpf){
+		Map<String, Object> doctor = doctorService.getDoctorByCPF(cpf);
+		model.addAttribute("doctor", doctor);
+		return "doctor/read_one";
+	}
 
 	@GetMapping("/create")
 	public String create() {

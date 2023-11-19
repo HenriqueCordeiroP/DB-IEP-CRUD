@@ -40,7 +40,9 @@
                 </thead>
                 <tbody>
                     <tr th:each="appointment : ${appointments}">
-                        <td th:text="${appointment.nome}"></td>
+                        <td>
+                            <a class="invisible-link text-main" th:href="@{'/appointment/read/'} + ${appointment['cpf_paciente']} + '/' +  ${appointment['cpf_medico']} + '/' + ${appointment['dt_consulta']}" th:text="${appointment.nome}"></a>
+                        </td>
                         <td th:text="${appointment.cpf_paciente}"></td>
                         <td th:text="${appointment.descricao}"></td>
                         <td th:switch="${appointment.confirmada}">

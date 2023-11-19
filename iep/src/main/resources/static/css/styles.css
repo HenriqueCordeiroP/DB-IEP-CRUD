@@ -60,3 +60,11 @@ input[type="checkbox"] {
 .readonly{
     background-color: var(--disabled) !important;
 }
+
+.text-main{
+    color: black;
+}
+
+.text-main:hover{
+    opacity: 80%;
+}
