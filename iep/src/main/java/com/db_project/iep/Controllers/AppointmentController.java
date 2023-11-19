@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.db_project.iep.Service.AppointmentService;
 
-import Utils.Conversion;
+import Utils.Parser;
 import jakarta.servlet.http.HttpServletRequest;
 
 @Controller
@@ -38,50 +38,53 @@ public class AppointmentController {
 		return "appointment/create";
 	}
 
+	@PostMapping("/create")
+	public String create_form(HttpServletRequest request, Model model) {
+		Map<String, String> appointment = Parser.parseAppointmentFromRequest(request);
+
+		String appointmentResult = appointmentService.createAppointment(appointment);
+		
+		if (appointmentResult == null) {
+			return "redirect:/appointment/read";			
+		} else {
+			model.addAttribute("errorMessage", appointmentResult);
+			model.addAttribute("appointment", appointment);
+			System.out.println(appointment);
+			return "/appointment/create";
+		}
+	}
+
 	@GetMapping("/edit/{cpf_paciente}/{cpf_medico}/{data}")
 	public String edit(@PathVariable String cpf_paciente, @PathVariable String cpf_medico, @PathVariable String data,  Model model){
+		if(cpf_medico == "---"){
+			cpf_medico = null;
+		}
+		if(cpf_paciente == "---"){
+			cpf_paciente = null;
+		}
 		Map<String, Object> appointment = appointmentService.getAppointmentByCPF(cpf_paciente, cpf_medico, data);
 		model.addAttribute("appointment", appointment);
 		return "appointment/edit";
 	}
 	
-	@PostMapping("/create")
-	public String create_form(HttpServletRequest request) {
-		String data = Conversion.parseStringOrNull(request.getParameter("data"));
-		String descricao = Conversion.parseStringOrNull(request.getParameter("descricao"));
-		String confirmada = request.getParameter("confirmada");
-		String historia_clinica = Conversion.parseStringOrNull(request.getParameter("historia_clinica"));
-		String CID = Conversion.parseStringOrNull(request.getParameter("CID"));
-        String cpf = Conversion.parseStringOrNull(request.getParameter("cpf"));
-        String cpf_medico = Conversion.parseStringOrNull(request.getParameter("cpf_medico"));
-		int appointmentResult = appointmentService.createAppointment(data, descricao, confirmada, historia_clinica, CID, cpf, cpf_medico);
-		if (appointmentResult > 0) {
+	@PostMapping("/edit/{cpf}/{cpf_medico}/{data_original}")
+	public String update(Model model, HttpServletRequest request, @PathVariable String cpf, @PathVariable String cpf_medico, @PathVariable String data_original) {
+		Map<String, String> appointment = Parser.parseAppointmentFromRequest(request);
+		String appointmentResult = null;
+
+		if(!appointment.get("data").equals(data_original)){
+			appointmentService.deleteAppointment(cpf, cpf_medico, data_original);
+			appointmentResult = appointmentService.createAppointment(appointment);
+		} else{
+			appointmentResult = appointmentService.updateAppointment(appointment);
+		}
+		if (appointmentResult == null) {
 			return "redirect:/appointment/read";			
 		} else {
-			// return error
-			return null;
+			model.addAttribute("errorMessage", appointmentResult);
+			model.addAttribute("appointment", appointment);
+			return "/appointment/edit";
 		}
-	}
-	
-	@PostMapping("/edit/{cpf}/{cpf_medico}/{data_original}")
-	public String update(HttpServletRequest request, @PathVariable String cpf, @PathVariable String cpf_medico, @PathVariable String data_original) {
-		String data = Conversion.parseStringOrNull(request.getParameter("data"));
-		String descricao = Conversion.parseStringOrNull(request.getParameter("descricao"));
-		String confirmada = request.getParameter("confirmada");
-		String historia_clinica = Conversion.parseStringOrNull(request.getParameter("historia_clinica"));
-		String CID = Conversion.parseStringOrNull(request.getParameter("CID"));
-		int appointmentResult = 0;
-		if(!data.equals(data_original)){
-			System.out.println("AAAAAAAA " + data);
-			appointmentService.deleteAppointment(cpf, cpf_medico, data_original);
-			appointmentResult = appointmentService.createAppointment(data, descricao, confirmada, historia_clinica, CID, cpf, cpf_medico);
-		} else{
-			appointmentResult = appointmentService.updateAppointment(data_original, descricao, confirmada, historia_clinica, CID, cpf, cpf_medico);
-		}
-		if (appointmentResult > 0) {
-			return "redirect:/appointment/read";			
-		}
-		return null;
 	}
 	
 	@GetMapping("/delete/{cpf}/{cpf_medico}/{data}")

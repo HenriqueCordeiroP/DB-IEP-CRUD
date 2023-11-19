@@ -1,8 +1,9 @@
+create database iep;
 use iep;
 
 create table Pessoa (
-cpf varchar(20) primary key,
-RG varchar(20) not null unique,
+cpf varchar(20) primary key check (cpf like '___.___.___-__'),
+rg varchar(20) not null unique check (rg like '_.___.___'),
 nome varchar(100),
 dt_nascimento date,
 sexo char,
@@ -15,17 +16,12 @@ rua varchar(100),
 numero varchar(100)
 );
 
-alter table pessoa
-add constraint cpf_pessoa_ck check (cpf like "___.___.___-__");
 
 create table Email(
-email varchar(100) primary key,
+email varchar(100) primary key check (email like '%@%.%'),
 cpf_pessoa varchar(20),
 
-alter table email
-add constraint email_email_ck check (email like "%@%.%");
-
-constraint fk_pessoa_cpf foreign key(cpf_pessoa) references Pessoa(cpf)
+constraint fk_pessoa_cpf foreign key(cpf_pessoa) references Pessoa(cpf) on delete cascade
 );
 
 create table Paciente(
@@ -36,14 +32,14 @@ convenio varchar(100),
 profissao varchar(100),
 cpf_pessoa varchar(20),
 
-constraint paciente_cpf_pessoa_fk foreign key(cpf_pessoa) references Pessoa(cpf)
+constraint paciente_cpf_pessoa_fk foreign key(cpf_pessoa) references Pessoa(cpf) on delete cascade
 );
 
 create table Responsavel(
 cpf_pessoa varchar(20),
 cpf_paciente varchar(20),
 
-constraint responsavel_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf),
+constraint responsavel_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf) on delete cascade,
 constraint responsavel_cpf_paciente_fk foreign key (cpf_paciente) references Paciente (cpf_pessoa)
 );
 
@@ -52,7 +48,7 @@ cargo varchar(127),
 cpf_pessoa varchar(20),
 cpf_supervisor varchar(20) null,
 
-constraint servicosgerais_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf),
+constraint servicosgerais_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf) on delete cascade,
 constraint servicosgerais_cpf_supervisor_fk foreign key (cpf_supervisor) references Servicos_Gerais(cpf_pessoa)
 );
 
@@ -60,7 +56,7 @@ create table Nutricionista(
 cpf_pessoa varchar(20),
 crn varchar(20) not null,
 
-constraint nutricionista_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf)
+constraint nutricionista_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf) on delete cascade
 );
 
 create table Medico(
@@ -69,22 +65,33 @@ crm varchar(20) not null,
 nome_especialidade varchar(255),
 rqe varchar(20),
 
-constraint medico_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf)
+constraint medico_cpf_pessoa_fk foreign key (cpf_pessoa) references Pessoa(cpf) on delete cascade
 );
 
 create table Agendamento(
-dt_agendamento date not null,
+dt_agendamento date,
 descricao varchar(255),
 cpf_paciente varchar(20),
 
-constraint agendamento_cpf_paciente_fk foreign key(cpf_paciente) references Paciente(cpf_pessoa)
+constraint agendamento_cpf_paciente_fk foreign key(cpf_paciente) references Paciente(cpf_pessoa) on delete cascade,
+primary key (dt_agendamento, cpf_paciente)
 );
 
-alter table Agendamento
-add constraint agendamento_pk primary key (dt_agendamento, cpf_paciente);
+DELIMITER //
+CREATE TRIGGER check_agendamento_date
+BEFORE INSERT ON Agendamento
+FOR EACH ROW
+BEGIN
+  IF NEW.dt_agendamento < CURDATE() THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Invalid date for Agendamento';
+  END IF;
+END;
+//
+DELIMITER ;
 
 create table Dados_Do_Paciente(
-dt_atualizacao date default (current_date),
+dt_atualizacao date ,
 IMC float default 0.0,
 cintura_abdominal float default 0.0,
 altura float default 0.0,
@@ -92,7 +99,7 @@ peso float default 0.0,
 pressao float default 0.0,
 cpf_paciente varchar(20),
 
-constraint dados_paciente_cpf_fk foreign key (cpf_paciente) references Paciente(cpf_pessoa)
+constraint dados_paciente_cpf_fk foreign key (cpf_paciente) references Paciente(cpf_pessoa) on delete cascade
 ); 	
 
 create table Consulta(
@@ -105,11 +112,24 @@ cpf_paciente varchar(20),
 cpf_medico varchar(20) null default null,
 cpf_nutricionista varchar(20) null default null,
 
-constraint consulta_pk unique (dt_consulta, cpf_paciente, cpf_medico, cpf_nutricionista),
-constraint consulta_paciente_cpf_fk foreign key (cpf_paciente) references Paciente(cpf_pessoa),
-constraint consulta_medico_cpf_fk foreign key (cpf_medico) references Medico(cpf_pessoa),
-constraint consulta_nutricionista_cpf_fk foreign key (cpf_nutricionista) references Nutricionista(cpf_pessoa)
+constraint consulta_pk unique (dt_consulta, cpf_paciente, cpf_medico, cpf_nutricionista),  
+constraint consulta_paciente_cpf_fk foreign key (cpf_paciente) references Paciente(cpf_pessoa) on delete set null,
+constraint consulta_medico_cpf_fk foreign key (cpf_medico) references Medico(cpf_pessoa) on delete set null,
+constraint consulta_nutricionista_cpf_fk foreign key (cpf_nutricionista) references Nutricionista(cpf_pessoa) on delete set null
 );
+
+DELIMITER $$
+CREATE TRIGGER check_consulta_date
+BEFORE INSERT ON Consulta
+FOR EACH ROW
+BEGIN
+  IF NEW.dt_consulta < CURDATE() THEN
+    SIGNAL SQLSTATE '45000'
+    SET MESSAGE_TEXT = 'Invalid date for Consulta';
+  END IF;
+END;
+$$
+DELIMITER ;
 
 create table Exame(
 codigo int auto_increment primary key,
@@ -124,8 +144,8 @@ dt_consulta date,
 cpf_paciente varchar(20),
 codigo_exame int,
 
-constraint consulta_requisicao_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente),
-constraint exame_requisicao_fk foreign key (codigo_exame) references Exame(codigo)
+constraint consulta_requisicao_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete set null,
+constraint exame_requisicao_fk foreign key (codigo_exame) references Exame(codigo) on delete cascade
 );
 
 create table Atestado(
@@ -134,7 +154,7 @@ descricao varchar(200),
 dt_consulta date,
 cpf_paciente varchar(20),
 
-constraint atestado_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente)
+constraint atestado_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete cascade
 );
 
 create table Prontuario(
@@ -144,7 +164,7 @@ retorno_previsto date,
 dt_consulta date,
 cpf_paciente varchar(20),
 
-constraint prontuario_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente)
+constraint prontuario_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete cascade
 );
 
 create table Receita(
@@ -158,8 +178,8 @@ dt_consulta date,
 cpf_paciente varchar(20),
 codigo_receita int,
 
-constraint emissao_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente),
-constraint receita_emissao_fk foreign key (codigo_receita) references Receita(codigo)
+constraint emissao_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete cascade,
+constraint receita_emissao_fk foreign key (codigo_receita) references Receita(codigo) on delete cascade
 );
 
 create table Remedio(
@@ -174,16 +194,6 @@ nome_remedio varchar(50),
 dosagem_remedio varchar(50),
 codigo_receita int,
 
-constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) references Remedio(nome, dosagem),
-constraint receita_fk foreign key (codigo_receita) references Receita(codigo)
+constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) references Remedio(nome, dosagem) on delete cascade,
+constraint receita_fk foreign key (codigo_receita) references Receita(codigo) on delete cascade
 );
-
-SELECT COALESCE(p.nome_social, pe.nome) AS nome, c.cpf_paciente, c.dt_consulta, c.confirmada, c.descricao, c.cid, pm.nome as nome_medico, c.cpf_medico 
-FROM consulta c  
-JOIN paciente p ON p.cpf_pessoa = c.cpf_paciente  
-JOIN pessoa pe ON p.cpf_pessoa = pe.cpf  
-JOIN ( 
-SELECT m.cpf_pessoa, p2.nome FROM medico m JOIN pessoa p2 ON p2.cpf = m.cpf_pessoa 
-) pm ON pm.cpf_pessoa = c.cpf_medico 
-WHERE c.dt_consulta >= curdate()  
-ORDER BY c.dt_consulta asc;
