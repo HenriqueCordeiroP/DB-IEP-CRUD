@@ -103,6 +103,7 @@ constraint dados_paciente_cpf_fk foreign key (cpf_paciente) references Paciente(
 ); 	
 
 create table Consulta(
+id int auto_increment primary key,
 dt_consulta date,
 confirmada bool default false,
 historia_clinica varchar(512),
@@ -112,7 +113,6 @@ cpf_paciente varchar(20),
 cpf_medico varchar(20) null default null,
 cpf_nutricionista varchar(20) null default null,
 
-constraint consulta_pk unique (dt_consulta, cpf_paciente, cpf_medico, cpf_nutricionista),  
 constraint consulta_paciente_cpf_fk foreign key (cpf_paciente) references Paciente(cpf_pessoa) on delete set null,
 constraint consulta_medico_cpf_fk foreign key (cpf_medico) references Medico(cpf_pessoa) on delete set null,
 constraint consulta_nutricionista_cpf_fk foreign key (cpf_nutricionista) references Nutricionista(cpf_pessoa) on delete set null
@@ -140,31 +140,28 @@ resultado varchar(200)
 
 create table Requisicao(
 dt_requisicao date default (current_date),
-dt_consulta date,
-cpf_paciente varchar(20),
+id_consulta int,
 codigo_exame int,
 
-constraint consulta_requisicao_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete set null,
+constraint consulta_requisicao_fk foreign key (id_consulta) references Consulta(id) on delete set null,
 constraint exame_requisicao_fk foreign key (codigo_exame) references Exame(codigo) on delete cascade
 );
 
 create table Atestado(
 dt_emissao date,
 descricao varchar(200),
-dt_consulta date,
-cpf_paciente varchar(20),
+id_consulta int,
 
-constraint atestado_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete cascade
+constraint atestado_consulta_fk foreign key (id_consulta) references Consulta(id) on delete cascade
 );
 
 create table Prontuario(
 codigo int auto_increment primary key,
 primeira_vez bool,
 retorno_previsto date,
-dt_consulta date,
-cpf_paciente varchar(20),
+id_consulta int,
 
-constraint prontuario_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete cascade
+constraint prontuario_consulta_consulta_fk foreign key (id_consulta) references Consulta(id) on delete cascade
 );
 
 create table Receita(
@@ -174,11 +171,10 @@ instrucoes varchar(200)
 );
 
 create table Emissao(
-dt_consulta date,
-cpf_paciente varchar(20),
+id_consulta int,
 codigo_receita int,
 
-constraint emissao_consulta_dt_consulta_fk foreign key (dt_consulta, cpf_paciente) references Consulta(dt_consulta, cpf_paciente) on delete cascade,
+constraint emissao_consulta_consulta_fk foreign key (id_consulta) references Consulta(id) on delete cascade,
 constraint receita_emissao_fk foreign key (codigo_receita) references Receita(codigo) on delete cascade
 );
 
@@ -199,11 +195,20 @@ constraint receita_fk foreign key (codigo_receita) references Receita(codigo) on
 );
 
 
-
-SELECT cpf_paciente, COUNT(*) AS appointment_count
-FROM consulta
-where YEAR(dt_consulta) = YEAR(CURDATE())
-AND MONTH(dt_consulta) = MONTH(CURDATE())
-GROUP BY cpf_paciente
-order by appointment_count desc ;
-
+# povoamento
+insert into Pessoa values("098.035.454-42", "9.624.347", "Henrique Cordeiro", "2004-05-28", "M", null, "81 9 87594540", null, "Recife", "Boa Viagem", "Francisco da Cunha", "142"),
+									   ("123.456.789-10", "1.123.123", "João da Silva", "1997-08-11", "M", null, "81 9 12344321", null, "Recife", "Recife Antigo", "Cais do Apolo", "55"),
+									   ("098.765.432-21", "0.987.654", "Maria das Dores", "1900-12-21", "F", "81 34332323", "81 9 99019-1221", null, "Jaboatão dos Guararapes", "Piedade", "Vinicius de Moraes", "22"),
+									   ("019.192.124-22", "1.123.294", "Luiza Omena", "2004-03-05", "F", null, "81 996821711", null, "Recife", "Poço da Panela", "Antonio Vitruvio", "49");
+									   
+insert into Email values ("henrique@gmail.com", "098.035.454-42"),
+									 ("joao@gmail.com", "123.456.789-10"),
+									 ("maria@gmail.com", "098.765.432-21"),
+									 ("luiza@gmail.com", "019.192.124-22");
+									  
+insert into Paciente values("Poeira, Desodorante, Abelha", null, "Dra. Lúcia Cordeiro", "SAFRA", "Estagiária de Desenvolvimento", "019.192.124-22"),
+										 (null, "Sandra Mattos", "Dra. Lúcia Cordeiro", "Sulamerica", "Estagiário de Desenvolvimento", "098.035.454-42");
+										 
+insert into Medico values("123.456.789-10", "12312","Endocrinologista", "12321321"),
+									  ("098.765.432-21", "98042", "Oftalmologista", "10990129");
+									  

@@ -22,7 +22,7 @@ public class AppointmentService {
 	public List<Map<String, Object>> getAppointmentList(){
 		String sql = "SELECT COALESCE(p.nome_social, pe.nome, '---') AS nome, COALESCE(c.cpf_paciente, '---') AS cpf_paciente, " +
 					 "c.dt_consulta, c.confirmada, c.descricao, c.cid, COALESCE(pm.nome, '---') as nome_medico, " +
-					 "COALESCE(c.cpf_medico, '---') as cpf_medico " +
+					 "COALESCE(c.cpf_medico, '---') as cpf_medico, c.id " +
 					 "FROM consulta c " +
 					 "LEFT JOIN paciente p ON p.cpf_pessoa = c.cpf_paciente " +
 					 "LEFT JOIN pessoa pe ON p.cpf_pessoa = pe.cpf " +
@@ -58,25 +58,22 @@ public class AppointmentService {
 		return null;	
 	}
 	
-	public Map<String, Object> getAppointmentByCPF(String cpf_paciente, String cpf_medico, String data) {
+	public Map<String, Object> getAppointmentByID(String id) {
 		String sql = "SELECT * " + 
 		"FROM consulta c " +
-		"WHERE c.cpf_paciente = ? AND " + 
-		"c.cpf_medico = ? AND " +
-		"c.dt_consulta = ?";
-		return jdbcTemplate.queryForMap(sql, cpf_paciente, cpf_medico, data);
+		"WHERE c.id = ? ";
+		return jdbcTemplate.queryForMap(sql, id);
 	}
 	
-	public String updateAppointment(Map<String, String> appointment) {
+	public String updateAppointment(Map<String, String> appointment, String id) {
 		Boolean confirmed = Boolean.parseBoolean(appointment.get("confirmada"));
 		String sql = "UPDATE consulta " +
 	                 "SET descricao = ?, confirmada = ?, historia_clinica = ?, " +
 	                 "cid = ? " +
-	                 "WHERE cpf_paciente = ? AND cpf_medico = ? AND dt_consulta = ?";
+	                 "WHERE id = ?";
 		try {
 			jdbcTemplate.update(sql, appointment.get("descricao"), confirmed, 
-			appointment.get("historia_clinica"), appointment.get("CID"), appointment.get("cpf"),
-			appointment.get("cpf_medico"), appointment.get("data"));
+			appointment.get("historia_clinica"), appointment.get("CID"), id);
 		} catch (UncategorizedSQLException u){
 			if(u.getMessage().contains("Invalid date for Consulta")){
 				return "A data deve ser posterior a hoje.";
@@ -85,10 +82,10 @@ public class AppointmentService {
 		return null;
 	}
 	
-	public int deleteAppointment(String cpf, String cpf_medico,String data) {
-		String sql = "DELETE FROM consulta WHERE cpf_paciente = ? AND cpf_medico = ? AND dt_consulta = ?";
+	public int deleteAppointment(String id) {
+		String sql = "DELETE FROM consulta WHERE id = ?";
 		
-		return jdbcTemplate.update(sql, cpf, cpf_medico, data);
+		return jdbcTemplate.update(sql, id);
 	}
 
 	public int removeDoctorFromAppointments(String cpf_medico){

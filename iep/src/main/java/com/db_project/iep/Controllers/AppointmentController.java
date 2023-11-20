@@ -44,9 +44,9 @@ public class AppointmentController {
 		return "appointment/read";
 	}
 
-	@GetMapping("/read/{cpf_paciente}/{cpf_medico}/{data}")
-	public String read(Model model, @PathVariable String cpf_paciente, @PathVariable String cpf_medico, @PathVariable String data  ){
-		Map<String, Object> appointment = appointmentService.getAppointmentByCPF(cpf_paciente, cpf_medico, data);
+	@GetMapping("/read/{id}")
+	public String read(Model model, @PathVariable String id){
+		Map<String, Object> appointment = appointmentService.getAppointmentByID(id);
 		
 		
 		model.addAttribute("appointment", appointment);
@@ -83,28 +83,22 @@ public class AppointmentController {
 		}
 	}
 
-	@GetMapping("/edit/{cpf_paciente}/{cpf_medico}/{data}")
-	public String edit(@PathVariable String cpf_paciente, @PathVariable String cpf_medico, @PathVariable String data,  Model model){
-		if(cpf_medico == "---"){
-			cpf_medico = null;
-		}
-		if(cpf_paciente == "---"){
-			cpf_paciente = null;
-		}
-		Map<String, Object> appointment = appointmentService.getAppointmentByCPF(cpf_paciente, cpf_medico, data);
+	@GetMapping("/edit/{id}/{data}")
+	public String edit(@PathVariable String id, @PathVariable String data,  Model model){
+		Map<String, Object> appointment = appointmentService.getAppointmentByID(id);
 		model.addAttribute("appointment", appointment);
 		return "appointment/edit";
 	}
 	
-	@PostMapping("/edit/{cpf}/{cpf_medico}/{data_original}")
-	public String update(Model model, HttpServletRequest request, @PathVariable String cpf, @PathVariable String cpf_medico, @PathVariable String data_original) {
+	@PostMapping("/edit/{id}/{data}")
+	public String update(Model model, HttpServletRequest request, @PathVariable String id, @PathVariable String data) {
 		Map<String, String> appointment = Parser.parseAppointmentFromRequest(request);
 		String appointmentResult = null;
-		if(!appointment.get("data").equals(data_original)){
-			appointmentService.deleteAppointment(cpf, cpf_medico, data_original);
+		if(!appointment.get("data").equals(data)){
+			appointmentService.deleteAppointment(id);
 			appointmentResult = appointmentService.createAppointment(appointment);
 		} else{
-			appointmentResult = appointmentService.updateAppointment(appointment);
+			appointmentResult = appointmentService.updateAppointment(appointment, id);
 		}
 		if (appointmentResult == null) {
 			return "redirect:/appointment/read";			
@@ -115,9 +109,9 @@ public class AppointmentController {
 		}
 	}
 	
-	@GetMapping("/delete/{cpf}/{cpf_medico}/{data}")
-	public String delete(@PathVariable String cpf, @PathVariable String cpf_medico, @PathVariable String data) {
-		int appointmentResult = appointmentService.deleteAppointment(cpf, cpf_medico, data);
+	@GetMapping("/delete/{id}")
+	public String delete(@PathVariable String id) {
+		int appointmentResult = appointmentService.deleteAppointment(id);
 		if (appointmentResult > 0) {
 			return "redirect:/appointment/read";			
 		}

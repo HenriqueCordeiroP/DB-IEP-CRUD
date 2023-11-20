@@ -67,7 +67,7 @@
               <label for="cpf_medico">Médico*:</label>
               <select class="form-control" id="cpf_medico" name="cpf_medico" required>
                 <option>Selecione o Médico</option>
-                <option th:each="doctor : ${doctors}" th:value="${doctor['cpf_pessoa']}" th:text="${doctor['nome']}"></option>
+                <option th:each="doctor : ${doctors}" th:value="${doctor['cpf']}" th:text="${doctor['nome']}"></option>
               </select>
           </div>
 
