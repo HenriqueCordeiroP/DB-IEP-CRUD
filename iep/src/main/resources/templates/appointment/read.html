@@ -40,6 +40,24 @@
     </section>
     <section class="mx-5">
         <div class="container">
+            <form method="post">
+                <div class="row">
+                    <div class="col-auto">
+                        <label for="start_date">Data de Início:</label>
+                        <input th:unless="${filter}" type="date" class="form-control" id="start_date" name="start_date">
+                        <input th:if="${filter}" th:value="${filter['start_date']}" type="date" class="form-control" id="start_date" name="start_date">
+                    </div>
+                    <div class="col-auto">
+                        <label for="end_date">Data de Término:</label>
+                        <input th:unless="${filter}" type="date" class="form-control" id="end_date" name="end_date">
+                        <input th:if="${filter}" th:value="${filter['end_date']}" type="date" class="form-control" id="end_date" name="end_date">
+                    </div>
+                    <div class="col-auto py-0">
+                        <button role="button" class="btn btn-primary" type="submit">Filtrar</button>
+                    </div>
+                </div>
+              </div>
+            </form>
             <table class="table">
                 <thead>
                     <tr>

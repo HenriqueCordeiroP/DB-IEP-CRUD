@@ -69,4 +69,13 @@ public class Parser {
 
         return patientMap;
     }
+
+    public static Map<String, String> parseFilterFromAppointment(HttpServletRequest request){
+        Map<String, String> dateMap = new HashMap<>();
+
+        dateMap.put("start_date", Conversion.parseStringOrNull(request.getParameter(("start_date"))));
+        dateMap.put("end_date", Conversion.parseStringOrNull(request.getParameter(("end_date"))));
+    
+        return dateMap;
+    }
 }

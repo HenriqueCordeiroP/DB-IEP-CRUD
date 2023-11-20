@@ -44,6 +44,17 @@ public class AppointmentController {
 		return "appointment/read";
 	}
 
+	@PostMapping("/read")
+	public String read(HttpServletRequest request, Model model){
+		Map<String, String> dateMap = Parser.parseFilterFromAppointment(request);
+		List<Map<String, Object>> appointments = appointmentService.filterAppointments(dateMap);
+		
+		model.addAttribute("appointments", appointments);
+		model.addAttribute("filter", dateMap);
+		System.out.println(model);
+		return "appointment/read";
+	}
+
 	@GetMapping("/read/{id}")
 	public String read(Model model, @PathVariable String id){
 		Map<String, Object> appointment = appointmentService.getAppointmentByID(id);

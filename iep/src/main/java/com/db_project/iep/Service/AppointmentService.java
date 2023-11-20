@@ -29,7 +29,6 @@ public class AppointmentService {
 					 "LEFT JOIN (" +
 					 "    SELECT m.cpf_pessoa, p2.nome FROM medico m JOIN pessoa p2 ON p2.cpf = m.cpf_pessoa" +
 					 ") pm ON pm.cpf_pessoa = c.cpf_medico " +
-					 "WHERE c.dt_consulta >= CURDATE() " +
 					 "ORDER BY c.dt_consulta ASC";
 		return jdbcTemplate.queryForList(sql);
 	}
@@ -98,5 +97,26 @@ public class AppointmentService {
 		String sql = "UPDATE consulta SET cpf_paciente = NULL WHERE cpf_paciente = ?";
 
 		return jdbcTemplate.update(sql, cpf_paciente);
+	}
+
+	public List<Map<String, Object>> filterAppointments(Map<String, String> dateMap){
+		if(dateMap.get("start_date") == null){
+			dateMap.put("start_date", "0001/01/01");
+		}
+		if(dateMap.get("end_date") == null){
+			dateMap.put("end_date", "9999/12/31");
+		}
+		String sql = "SELECT COALESCE(p.nome_social, pe.nome, '---') AS nome, COALESCE(c.cpf_paciente, '---') AS cpf_paciente, " +
+					 "c.dt_consulta, c.confirmada, c.descricao, c.cid, COALESCE(pm.nome, '---') as nome_medico, " +
+					 "COALESCE(c.cpf_medico, '---') as cpf_medico, c.id " +
+					 "FROM consulta c " +
+					 "LEFT JOIN paciente p ON p.cpf_pessoa = c.cpf_paciente " +
+					 "LEFT JOIN pessoa pe ON p.cpf_pessoa = pe.cpf " +
+					 "LEFT JOIN (" +
+					 "    SELECT m.cpf_pessoa, p2.nome FROM medico m JOIN pessoa p2 ON p2.cpf = m.cpf_pessoa" +
+					 ") pm ON pm.cpf_pessoa = c.cpf_medico " +
+					 "WHERE c.dt_consulta < ? AND c.dt_consulta > ? " +
+					 "ORDER BY c.dt_consulta ASC";
+		return jdbcTemplate.queryForList(sql, dateMap.get("end_date"), dateMap.get("start_date"));
 	}
 }
