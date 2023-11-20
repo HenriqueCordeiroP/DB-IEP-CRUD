@@ -202,5 +202,8 @@ constraint receita_fk foreign key (codigo_receita) references Receita(codigo) on
 
 SELECT cpf_paciente, COUNT(*) AS appointment_count
 FROM consulta
+where YEAR(dt_consulta) = YEAR(CURDATE())
+AND MONTH(dt_consulta) = MONTH(CURDATE())
 GROUP BY cpf_paciente
-order by appointment_count desc limit 1;
+order by appointment_count desc ;
+
