@@ -193,11 +193,3 @@ codigo_receita int,
 constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) references Remedio(nome, dosagem) on delete cascade,
 constraint receita_fk foreign key (codigo_receita) references Receita(codigo) on delete cascade
 );
-								
-
-SELECT coalesce(round(AVG(appointments_count)), "0") AS average_appointments_per_patient
-FROM (
-    SELECT cpf_paciente, COUNT(*) AS appointments_count
-    FROM consulta
-    GROUP BY cpf_paciente
-) AS patient_counts;
