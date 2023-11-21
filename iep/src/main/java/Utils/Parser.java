@@ -16,7 +16,6 @@ public class Parser {
         appointmentMap.put("CID", Conversion.parseStringOrNull(request.getParameter("CID")));
         appointmentMap.put("cpf", Conversion.parseStringOrNull(request.getParameter("cpf_paciente")));
         appointmentMap.put("cpf_medico", Conversion.parseStringOrNull(request.getParameter("cpf_medico")));
-        System.out.println(appointmentMap);
         return appointmentMap;
     }
 

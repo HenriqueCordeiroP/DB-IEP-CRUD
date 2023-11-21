@@ -96,7 +96,6 @@ public class PatientService {
 		try{
 			jdbcTemplate.update(sql, today, imc, cintura, altura, peso, pressao, patient.get("cpf"));
 		}catch(Exception e){
-			System.out.println(e.getMessage());
 		}
 		return 1;
 	}

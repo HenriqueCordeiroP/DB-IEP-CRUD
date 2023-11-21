@@ -77,7 +77,6 @@ public class PatientController {
 	@PostMapping("/edit/{cpf}")
 	public String update(HttpServletRequest request, @PathVariable String cpf, Model model) {
 		Map<String, String> patient = Parser.parsePatientFromRequest(request);
-		System.out.println(patient.get("nome"));
 		String patientResult = patientService.updatePaciente(patient);
 		if (patientResult == null) {
 			return "redirect:/patient/read";			

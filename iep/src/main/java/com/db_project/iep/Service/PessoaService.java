@@ -26,7 +26,6 @@ public class PessoaService {
 			pessoa.get("dt_nascimento"), pessoa.get("sexo"), pessoa.get("tel_residencial"), pessoa.get("tel_celular"), 
 			pessoa.get("cidade"), pessoa.get("bairro"), pessoa.get("rua"), pessoa.get("numero"));
 		} catch (DuplicateKeyException d){
-			System.out.println(d.getMessage());
 			if(d.getMessage().contains("cpf")){
 				return "Esse CPF já está registrado.";
 			} else if (d.getMessage().contains("rg")){

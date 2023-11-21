@@ -51,7 +51,6 @@ public class AppointmentController {
 		
 		model.addAttribute("appointments", appointments);
 		model.addAttribute("filter", dateMap);
-		System.out.println(model);
 		return "appointment/read";
 	}
 
@@ -77,7 +76,6 @@ public class AppointmentController {
 	@PostMapping("/create")
 	public String create_form(HttpServletRequest request, Model model) {
 		Map<String, String> appointment = Parser.parseAppointmentFromRequest(request);
-		System.out.println(appointment);
 		String appointmentResult = appointmentService.createAppointment(appointment);
 		
 		if (appointmentResult == null) {
@@ -89,7 +87,6 @@ public class AppointmentController {
 			model.addAttribute("doctors", doctors);
 			model.addAttribute("errorMessage", appointmentResult);
 			model.addAttribute("appointment", appointment);
-			System.out.println(appointment);
 			return "appointment/create";
 		}
 	}
