@@ -77,4 +77,21 @@ public class DoctorService {
 		return pessoaService.deletePessoa(cpf);
 	}
 
+	public List<Map<String, Object>> filterDoctors(Map<String, String> doctorMap){
+		if (doctorMap.get("search") == null)
+		{
+			doctorMap.put("search", "");
+		}
+		String doctor_str = doctorMap.get("search") + '%';
+
+		String sql = "SELECT pe.nome, e.email, pe.tel_celular, m.nome_especialidade,pe.cpf "  
+		+"FROM medico m "
+		+"JOIN pessoa pe ON m.cpf_pessoa = pe.cpf "
+		+"JOIN email e ON m.cpf_pessoa = e.cpf_pessoa "
+		+"WHERE pe.nome LIKE ? "
+		+"GROUP BY pe.nome, e.email, pe.tel_celular , m.nome_especialidade "
+		+"ORDER BY nome ASC";
+		return jdbcTemplate.queryForList(sql, doctor_str);
+	}
+
 }

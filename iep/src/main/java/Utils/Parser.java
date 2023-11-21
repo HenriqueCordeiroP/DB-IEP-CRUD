@@ -79,11 +79,11 @@ public class Parser {
         return dateMap;
     }
 
-    public static Map<String, String> parseFilterFromPatient(HttpServletRequest request){
-        Map<String, String> patientMap = new HashMap<>();
+    public static Map<String, String> parseFilterFromSearch(HttpServletRequest request){
+        Map<String, String> map = new HashMap<>();
 
-        patientMap.put("search", Conversion.parseStringOrNull(request.getParameter("patient_str")));
+        map.put("search", Conversion.parseStringOrNull(request.getParameter("search_str")));
 
-        return patientMap;
+        return map;
     }
 }
