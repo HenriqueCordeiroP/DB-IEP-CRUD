@@ -128,4 +128,12 @@ public class AppointmentController {
 		}
 		return null;
 	}
+
+	@GetMapping("/report")
+	public String report(Model model){
+		Map <String, String> report = appointmentService.generateReport();
+
+		model.addAttribute("report", report);
+		return "/appointment/report";
+	}
 }

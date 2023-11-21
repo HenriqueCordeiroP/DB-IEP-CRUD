@@ -1,5 +1,6 @@
 package com.db_project.iep.Service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -118,5 +119,60 @@ public class AppointmentService {
 					 "WHERE c.dt_consulta < ? AND c.dt_consulta > ? " +
 					 "ORDER BY c.dt_consulta ASC";
 		return jdbcTemplate.queryForList(sql, dateMap.get("end_date"), dateMap.get("start_date"));
+	}
+
+	public Map<String, String> generateReport(){
+		Map<String, String> report = new HashMap<>();
+		report.put("average_return", getAverageReturn()); 
+		report.put("average_appointments_patients", getAverageAppointmentsPatients());
+		report.put("average_appointments_doctors", getAverageAppointmentsDoctor());
+		report.put("total_appointments", getTotalAppointments());
+		return report;
+	}
+
+	public String getAverageReturn(){
+		String sql = "SELECT COALESCE(ROUND(AVG(a.return_time), 2), 'Não há retorno') AS average_return "+
+		"FROM ( "+
+		"SELECT cpf_paciente, dt_consulta, DATEDIFF(dt_consulta, LAG(dt_consulta) OVER (PARTITION BY cpf_paciente ORDER BY dt_consulta)) AS return_time " +
+		"FROM consulta " +
+		") a";
+		Map<String, Object> result = jdbcTemplate.queryForMap(sql); 
+		String avg_Result = result.get("average_return").toString();
+		String avg_return = avg_Result.substring(0, avg_Result.length() - 3); // remove .00
+		return avg_return;
+	}
+
+	public String getAverageAppointmentsPatients(){
+		String sql = "SELECT coalesce(round(AVG(appointments_count)), '0') AS average_appointments_per_patient "+
+					 "FROM ( " +
+					 "SELECT cpf_paciente, COUNT(*) AS appointments_count "+
+					 "FROM consulta "+
+					 "GROUP BY cpf_paciente "+
+					 ") AS patient_counts";
+		Map<String, Object> result = jdbcTemplate.queryForMap(sql); 
+		String avg_appointment = result.get("average_appointments_per_patient").toString();
+		return avg_appointment; 
+	}
+
+	public String getAverageAppointmentsDoctor(){
+		String sql = "SELECT COALESCE(ROUND(AVG(appointments_count)), '0') AS average_appointments_per_doctor "+
+					 "FROM ( " +
+					 "SELECT cpf_medico, COUNT(*) AS appointments_count "+
+					 "FROM consulta "+
+					 "GROUP BY cpf_medico "+
+					 ") AS doctor_counts";
+		Map<String, Object> result = jdbcTemplate.queryForMap(sql); 
+		String avg_appointment = result.get("average_appointments_per_doctor").toString();
+		return avg_appointment; 
+	}
+
+	public String getTotalAppointments(){
+		String sql = "SELECT COUNT(*) AS total " +
+					 "FROM consulta " +
+					 "WHERE YEAR(dt_consulta) = YEAR(CURDATE()) AND " +
+					 "MONTH(dt_consulta) = MONTH(CURDATE())";
+		Map<String, Object> result = jdbcTemplate.queryForMap(sql); 
+		String total = result.get("total").toString();
+		return total;
 	}
 }

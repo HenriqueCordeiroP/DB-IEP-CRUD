@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+    xmlns:hx="https://github.com/wimdeblauwe/htmx-spring-boot-thymeleaf">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEP</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/styles.css}">
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-md-1 text-left">
+                <a class="invisible-link btn btn-primary" href="/appointment/read">
+                    Voltar
+                </a>
+            </div>
+            <div class="col-md-11 text-left">
+                <h1>Relatório de Consultas</h1>
+            </div>
+        </div>
+        <div class="container">
+            <div class="col-lg-auto flex-grow-1 col-sm-12">
+                <div class="card border-0 bg-light p-3 m-2">
+                    <div class="d-flex justify-content-between">
+                        <h2 class="fw-bold" th:text="${report['average_return']}"></h2>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-end">
+                            <div>Dias até o</div>
+                            <div class="fs-5 fw-bold">Retorno</div>
+                        </div>
+                        <div class="align-self-end fs-8">
+                            em <strong>média</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-auto flex-grow-1 col-sm-12">
+                <div class="card border-0 bg-light p-3 m-2">
+                    <div class="d-flex justify-content-between">
+                        <h2 class="fw-bold" th:text="${report['average_appointments_patients']}"></h2>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-end">
+                            <div>Consultas por</div>
+                            <div class="fs-5 fw-bold">Paciente</div>
+                        </div>
+                        <div class="align-self-end fs-8">
+                            em <strong>média</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-auto flex-grow-1 col-sm-12">
+                <div class="card border-0 bg-light p-3 m-2">
+                    <div class="d-flex justify-content-between">
+                        <h2 class="fw-bold" th:text="${report['average_appointments_doctors']}"></h2>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-end">
+                            <div>Consultas por</div>
+                            <div class="fs-5 fw-bold">Médico</div>
+                        </div>
+                        <div class="align-self-end fs-8">
+                            em <strong>média</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-auto flex-grow-1 col-sm-12">
+                <div class="card border-0 bg-light p-3 m-2">
+                    <div class="d-flex justify-content-between">
+                        <h2 class="fw-bold" th:text="${report['total_appointments']}"></h2>
+                    </div>
+                    <div class="d-flex justify-content-between">
+                        <div class="align-self-end">
+                            <div>Total de</div>
+                            <div class="fs-5 fw-bold">Consultas Agendadas</div>
+                        </div>
+                        <div class="align-self-end fs-8">
+                            neste <strong>mês</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="https://unpkg.com/htmx.org@1.9.2"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+            crossorigin="anonymous"></script>
+    </div>
+</body>
+
+</html>
