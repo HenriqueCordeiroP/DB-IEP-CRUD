@@ -39,6 +39,15 @@
     </section>
     <section class="mx-5">
         <div class="container">
+            <form method="post" class="d-flex flex-row w-50">
+                    <input th:unless="${filter}" type="search" name="patient_str" class="flex-grow-1 border-1 bg-white"
+                    placeholder="Pesquisar paciente..." id="">
+                    <input th:if="${filter}" th:value="${filter['search']}" type="search" name="patient_str" class="flex-grow-1 border-1 bg-white"
+                    placeholder="Pesquisar paciente..." id="">
+                    <button type="submit" class="border-1 bg-white">
+                        <img th:src="@{/images/search.svg}" alt="Edit">
+                    </button>
+            </form>
             <table class="table">
                 <thead>
                     <tr>

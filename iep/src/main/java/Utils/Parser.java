@@ -78,4 +78,12 @@ public class Parser {
     
         return dateMap;
     }
+
+    public static Map<String, String> parseFilterFromPatient(HttpServletRequest request){
+        Map<String, String> patientMap = new HashMap<>();
+
+        patientMap.put("search", Conversion.parseStringOrNull(request.getParameter("patient_str")));
+
+        return patientMap;
+    }
 }

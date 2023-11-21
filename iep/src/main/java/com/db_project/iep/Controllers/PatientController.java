@@ -33,6 +33,15 @@ public class PatientController {
 		return "patient/read";
 	}
 	
+	@PostMapping("/read")
+	public String read(HttpServletRequest request, Model model){
+		Map<String, String> patientMap = Parser.parseFilterFromPatient(request);
+		List<Map<String, Object>> patients = patientService.filterPatients(patientMap);
+		model.addAttribute("patients", patients);
+		model.addAttribute("filter", patientMap);
+		return "patient/read";
+	}
+
 	@GetMapping("/read/{cpf}")
 	public String read(Model model, @PathVariable String cpf){
 		Map<String, Object> patient = patientService.getPacienteByCPF(cpf);
