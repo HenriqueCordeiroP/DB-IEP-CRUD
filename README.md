@@ -28,7 +28,8 @@ In order to open the .brM3 file, please visit [this](https://www.sis4.com/brMode
 1. First, alter the application.properties file and set the username and password for your MySQL user
 2. If you will, alter application.yml's port to one of your choosing
 3. Run IEP-criacao.sql on your DBMS of choice so that the database is created
-4. Run IEPApplication.java
+    1. If you want to, you can also run IEP-provoamento.sql to populate the database
+5. Run IEPApplication.java
 
 ## Authors
 
