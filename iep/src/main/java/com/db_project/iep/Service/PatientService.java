@@ -150,8 +150,11 @@ public class PatientService {
 	}
 
 	public List<Map<String, Object>> filterPatients(Map<String, String> patientMap){
+		if (patientMap.get("search") == null)
+		{
+			patientMap.put("search", "");
+		}
 		String patient_str = patientMap.get("search") + '%';
-
 		String sql = "SELECT COALESCE(p.nome_social, pe.nome) AS nome, e.email, pe.tel_celular, p.cpf_pessoa, "
 				+ "COALESCE(MIN(c.dt_consulta), '---') AS consulta_dt, COALESCE(MIN(a.dt_agendamento), '---') AS agendamento_dt "
 				+ "FROM paciente p "
