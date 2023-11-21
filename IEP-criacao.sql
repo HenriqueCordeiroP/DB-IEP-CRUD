@@ -193,22 +193,4 @@ codigo_receita int,
 constraint receita_remedio_fk foreign key (nome_remedio, dosagem_remedio) references Remedio(nome, dosagem) on delete cascade,
 constraint receita_fk foreign key (codigo_receita) references Receita(codigo) on delete cascade
 );
-
-
-# povoamento
-insert into Pessoa values("098.035.454-42", "9.624.347", "Henrique Cordeiro", "2004-05-28", "M", null, "81 9 87594540", null, "Recife", "Boa Viagem", "Francisco da Cunha", "142"),
-									   ("123.456.789-10", "1.123.123", "João da Silva", "1997-08-11", "M", null, "81 9 12344321", null, "Recife", "Recife Antigo", "Cais do Apolo", "55"),
-									   ("098.765.432-21", "0.987.654", "Maria das Dores", "1900-12-21", "F", "81 34332323", "81 9 99019-1221", null, "Jaboatão dos Guararapes", "Piedade", "Vinicius de Moraes", "22"),
-									   ("019.192.124-22", "1.123.294", "Luiza Omena", "2004-03-05", "F", null, "81 996821711", null, "Recife", "Poço da Panela", "Antonio Vitruvio", "49");
-									   
-insert into Email values ("henrique@gmail.com", "098.035.454-42"),
-									 ("joao@gmail.com", "123.456.789-10"),
-									 ("maria@gmail.com", "098.765.432-21"),
-									 ("luiza@gmail.com", "019.192.124-22");
-									  
-insert into Paciente values("Poeira, Desodorante, Abelha", null, "Dra. Lúcia Cordeiro", "SAFRA", "Estagiária de Desenvolvimento", "019.192.124-22"),
-										 (null, "Sandra Mattos", "Dra. Lúcia Cordeiro", "Sulamerica", "Estagiário de Desenvolvimento", "098.035.454-42");
-										 
-insert into Medico values("123.456.789-10", "12312","Endocrinologista", "12321321"),
-									  ("098.765.432-21", "98042", "Oftalmologista", "10990129");
 									  
