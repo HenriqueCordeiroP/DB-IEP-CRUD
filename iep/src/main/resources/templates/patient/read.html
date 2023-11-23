@@ -62,7 +62,7 @@
                 <tbody>
                     <tr th:each="patient : ${patients}">
                         <td>
-                            <a class="invisible-link text-main" th:href="@{'/patient/read/'} + ${patient['cpf_pessoa']}" th:text="${patient.nome}"></a>
+                            <a class="invisible-link text-main" th:href="@{'/patient/read/'} + ${patient['cpf_pessoa']}" th:text="${patient.nome_final}"></a>
                         </td>
                         <td th:text="${patient.email}"></td>
                         <td th:text="${patient.tel_celular}"></td>

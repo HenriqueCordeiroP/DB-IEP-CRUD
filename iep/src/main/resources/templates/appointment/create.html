@@ -60,7 +60,7 @@
               <label for="cpf">Paciente*:</label>
               <select class="form-control" id="cpf_paciente" name="cpf_paciente" required>
                 <option>Selecione o Paciente</option>
-                <option th:each="patient : ${patients}" th:value="${patient['cpf_pessoa']}" th:text="${patient['nome']}"></option>
+                <option th:each="patient : ${patients}" th:value="${patient['cpf_pessoa']}" th:text="${patient['nome_final']}"></option>
               </select>
             </div>
             <div class="form-group">
