@@ -139,7 +139,7 @@ public class PatientService {
 	public int deletePatient(String cpf) {
 		PessoaService pessoaService = new PessoaService(jdbcTemplate);
 		pessoaService.deletePessoa(cpf);		
-		return 0;
+		return 1;
 	}
 
 	public int deleteDadosDoPaciente(String cpf){
