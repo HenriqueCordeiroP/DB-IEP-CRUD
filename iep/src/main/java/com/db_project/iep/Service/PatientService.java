@@ -34,9 +34,9 @@ public class PatientService {
 				+ "LEFT JOIN ("
 				+ "SELECT ag.cpf_paciente, MIN(ag.dt_consulta) AS dt_agendamento "
 				+ "FROM consulta ag "
-				+ "WHERE ag.dt_consulta > CURDATE() "
+				+ "WHERE ag.dt_consulta > CURDATE() AND confirmada = true "
 				+ "GROUP BY ag.cpf_paciente "
-				+ ") a ON p.cpf_pessoa = c.cpf_paciente "
+				+ ") a ON p.cpf_pessoa = a.cpf_paciente "
 				+ "GROUP BY COALESCE(p.nome_social, pe.nome), e.email, pe.tel_celular "
 				+ "ORDER BY nome_final ASC");
 	}
@@ -166,11 +166,11 @@ public class PatientService {
 				+ "GROUP BY cons.cpf_paciente "
 				+ ") c ON p.cpf_pessoa = c.cpf_paciente "
 				+ "LEFT JOIN ("
-				+ "SELECT ag.cpf_paciente, MIN(ag.dt_agendamento) AS dt_agendamento "
-				+ "FROM agendamento ag "
-				+ "WHERE ag.dt_agendamento >= CURDATE() "
+				+ "SELECT ag.cpf_paciente, MIN(ag.dt_consulta) AS dt_agendamento "
+				+ "FROM consulta ag "
+				+ "WHERE ag.dt_consulta >= CURDATE() AND confirmada = true "
 				+ "GROUP BY ag.cpf_paciente "
-				+ ") a ON p.cpf_pessoa = c.cpf_paciente " 
+				+ ") a ON p.cpf_pessoa = a.cpf_paciente " 
 				+ "WHERE COALESCE(p.nome_social, pe.nome) LIKE ?"
 				+ "GROUP BY COALESCE(p.nome_social, pe.nome), e.email, pe.tel_celular "
 				+ "ORDER BY nome_final ASC";
